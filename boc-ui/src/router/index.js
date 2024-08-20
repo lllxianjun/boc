@@ -41,6 +41,12 @@ export const constantRoutes = [
       }
     ]
   },
+  // //分类统计路由
+  // {
+  //   path: '/view/system/echart/echarts',
+  //   name:'echarts',
+  //   component: () => import('@/views/system/echart/echarts'),
+  // },
   {
     path: '/login',
     component: () => import('@/views/login'),

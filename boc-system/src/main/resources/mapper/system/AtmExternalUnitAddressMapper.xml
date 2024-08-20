@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boc.system.mapper.AtmExternalUnitAddressMapper">
+    
+    <resultMap type="AtmExternalUnitAddress" id="AtmExternalUnitAddressResult">
+        <result property="id"    column="id"    />
+        <result property="atmLocation"    column="atm_location"    />
+        <result property="deviceModel"    column="device_model"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="routerLoopback"    column="router_loopback"    />
+        <result property="upstreamRouter"    column="upstream_router"    />
+        <result property="provincialWanIp"    column="provincial_wan_ip"    />
+        <result property="routerWan"    column="router_wan"    />
+        <result property="mstpVlan"    column="mstp_vlan"    />
+        <result property="atmAddressSegment"    column="atm_address_segment"    />
+        <result property="monitoringAddressSegment"    column="monitoring_address_segment"    />
+        <result property="switchAddress"    column="switch_address"    />
+        <result property="newRouterIp"    column="new_router_ip"    />
+        <result property="lineDebugDate"    column="line_debug_date"    />
+        <result property="carrier"    column="carrier"    />
+        <result property="port"    column="port"    />
+        <result property="oppositeAddressSegment"    column="opposite_address_segment"    />
+        <result property="oppositeFrontIp"    column="opposite_front_ip"    />
+        <result property="actualAtmAddress"    column="actual_atm_address"    />
+        <result property="intraAtmIp"    column="intra_atm_ip"    />
+        <result property="gateway"    column="gateway"    />
+        <result property="pcAddress"    column="pc_address"    />
+        <result property="subnetMask"    column="subnet_mask"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectAtmExternalUnitAddressVo">
+        select id, atm_location, device_model, device_name, router_loopback, upstream_router, provincial_wan_ip, router_wan, mstp_vlan, atm_address_segment, monitoring_address_segment, switch_address, new_router_ip, line_debug_date, carrier, port, opposite_address_segment, opposite_front_ip, actual_atm_address, intra_atm_ip, gateway, pc_address, subnet_mask, bank_name, remark, created_by, created_time, updated_by, updated_time from atm_external_unit_address
+    </sql>
+
+    <select id="selectAtmExternalUnitAddressList" parameterType="AtmExternalUnitAddress" resultMap="AtmExternalUnitAddressResult">
+        <include refid="selectAtmExternalUnitAddressVo"/>
+        <where>  
+            <if test="atmLocation != null  and atmLocation != ''"> and atm_location like concat('%', #{atmLocation}, '%')</if>
+            <if test="deviceModel != null  and deviceModel != ''"> and device_model like concat('%', #{deviceModel}, '%')</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="routerLoopback != null  and routerLoopback != ''"> and router_loopback like concat('%', #{routerLoopback}, '%')</if>
+            <if test="upstreamRouter != null  and upstreamRouter != ''"> and upstream_router like concat('%', #{upstreamRouter}, '%')</if>
+            <if test="provincialWanIp != null  and provincialWanIp != ''"> and provincial_wan_ip like concat('%', #{provincialWanIp}, '%')</if>
+            <if test="routerWan != null  and routerWan != ''"> and router_wan like concat('%', #{routerWan}, '%')</if>
+            <if test="mstpVlan != null  and mstpVlan != ''"> and mstp_vlan like concat('%', #{mstpVlan}, '%')</if>
+            <if test="atmAddressSegment != null  and atmAddressSegment != ''"> and atm_address_segment like concat('%', #{atmAddressSegment}, '%')</if>
+            <if test="monitoringAddressSegment != null  and monitoringAddressSegment != ''"> and monitoring_address_segment like concat('%', #{monitoringAddressSegment}, '%')</if>
+            <if test="switchAddress != null  and switchAddress != ''"> and switch_address like concat('%', #{switchAddress}, '%')</if>
+            <if test="newRouterIp != null  and newRouterIp != ''"> and new_router_ip like concat('%', #{newRouterIp}, '%')</if>
+            <if test="lineDebugDate != null "> and line_debug_date like concat('%', #{lineDebugDate}, '%')</if>
+            <if test="carrier != null  and carrier != ''"> and carrier like concat('%', #{carrier}, '%')</if>
+            <if test="port != null  and port != ''"> and port like concat('%', #{port}, '%')</if>
+            <if test="oppositeAddressSegment != null  and oppositeAddressSegment != ''"> and opposite_address_segment like concat('%', #{oppositeAddressSegment}, '%')</if>
+            <if test="oppositeFrontIp != null  and oppositeFrontIp != ''"> and opposite_front_ip like concat('%', #{oppositeFrontIp}, '%')</if>
+            <if test="actualAtmAddress != null  and actualAtmAddress != ''"> and actual_atm_address like concat('%', #{actualAtmAddress}, '%')</if>
+            <if test="intraAtmIp != null  and intraAtmIp != ''"> and intra_atm_ip like concat('%', #{intraAtmIp}, '%')</if>
+            <if test="gateway != null  and gateway != ''"> and gateway like concat('%', #{gateway}, '%')</if>
+            <if test="pcAddress != null  and pcAddress != ''"> and pc_address like concat('%', #{pcAddress}, '%')</if>
+            <if test="subnetMask != null  and subnetMask != ''"> and subnet_mask like concat('%', #{subnetMask}, '%')</if>
+            <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectAtmExternalUnitAddressById" parameterType="Long" resultMap="AtmExternalUnitAddressResult">
+        <include refid="selectAtmExternalUnitAddressVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAtmExternalUnitAddress" parameterType="AtmExternalUnitAddress" useGeneratedKeys="true" keyProperty="id">
+        insert into atm_external_unit_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="atmLocation != null">atm_location,</if>
+            <if test="deviceModel != null">device_model,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="routerLoopback != null">router_loopback,</if>
+            <if test="upstreamRouter != null">upstream_router,</if>
+            <if test="provincialWanIp != null">provincial_wan_ip,</if>
+            <if test="routerWan != null">router_wan,</if>
+            <if test="mstpVlan != null">mstp_vlan,</if>
+            <if test="atmAddressSegment != null">atm_address_segment,</if>
+            <if test="monitoringAddressSegment != null">monitoring_address_segment,</if>
+            <if test="switchAddress != null">switch_address,</if>
+            <if test="newRouterIp != null">new_router_ip,</if>
+            <if test="lineDebugDate != null">line_debug_date,</if>
+            <if test="carrier != null">carrier,</if>
+            <if test="port != null">port,</if>
+            <if test="oppositeAddressSegment != null">opposite_address_segment,</if>
+            <if test="oppositeFrontIp != null">opposite_front_ip,</if>
+            <if test="actualAtmAddress != null">actual_atm_address,</if>
+            <if test="intraAtmIp != null">intra_atm_ip,</if>
+            <if test="gateway != null">gateway,</if>
+            <if test="pcAddress != null">pc_address,</if>
+            <if test="subnetMask != null">subnet_mask,</if>
+            <if test="bankName != null">bank_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="atmLocation != null">#{atmLocation},</if>
+            <if test="deviceModel != null">#{deviceModel},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="routerLoopback != null">#{routerLoopback},</if>
+            <if test="upstreamRouter != null">#{upstreamRouter},</if>
+            <if test="provincialWanIp != null">#{provincialWanIp},</if>
+            <if test="routerWan != null">#{routerWan},</if>
+            <if test="mstpVlan != null">#{mstpVlan},</if>
+            <if test="atmAddressSegment != null">#{atmAddressSegment},</if>
+            <if test="monitoringAddressSegment != null">#{monitoringAddressSegment},</if>
+            <if test="switchAddress != null">#{switchAddress},</if>
+            <if test="newRouterIp != null">#{newRouterIp},</if>
+            <if test="lineDebugDate != null">#{lineDebugDate},</if>
+            <if test="carrier != null">#{carrier},</if>
+            <if test="port != null">#{port},</if>
+            <if test="oppositeAddressSegment != null">#{oppositeAddressSegment},</if>
+            <if test="oppositeFrontIp != null">#{oppositeFrontIp},</if>
+            <if test="actualAtmAddress != null">#{actualAtmAddress},</if>
+            <if test="intraAtmIp != null">#{intraAtmIp},</if>
+            <if test="gateway != null">#{gateway},</if>
+            <if test="pcAddress != null">#{pcAddress},</if>
+            <if test="subnetMask != null">#{subnetMask},</if>
+            <if test="bankName != null">#{bankName},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAtmExternalUnitAddress" parameterType="AtmExternalUnitAddress">
+        update atm_external_unit_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="atmLocation != null">atm_location = #{atmLocation},</if>
+            <if test="deviceModel != null">device_model = #{deviceModel},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="routerLoopback != null">router_loopback = #{routerLoopback},</if>
+            <if test="upstreamRouter != null">upstream_router = #{upstreamRouter},</if>
+            <if test="provincialWanIp != null">provincial_wan_ip = #{provincialWanIp},</if>
+            <if test="routerWan != null">router_wan = #{routerWan},</if>
+            <if test="mstpVlan != null">mstp_vlan = #{mstpVlan},</if>
+            <if test="atmAddressSegment != null">atm_address_segment = #{atmAddressSegment},</if>
+            <if test="monitoringAddressSegment != null">monitoring_address_segment = #{monitoringAddressSegment},</if>
+            <if test="switchAddress != null">switch_address = #{switchAddress},</if>
+            <if test="newRouterIp != null">new_router_ip = #{newRouterIp},</if>
+            <if test="lineDebugDate != null">line_debug_date = #{lineDebugDate},</if>
+            <if test="carrier != null">carrier = #{carrier},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="oppositeAddressSegment != null">opposite_address_segment = #{oppositeAddressSegment},</if>
+            <if test="oppositeFrontIp != null">opposite_front_ip = #{oppositeFrontIp},</if>
+            <if test="actualAtmAddress != null">actual_atm_address = #{actualAtmAddress},</if>
+            <if test="intraAtmIp != null">intra_atm_ip = #{intraAtmIp},</if>
+            <if test="gateway != null">gateway = #{gateway},</if>
+            <if test="pcAddress != null">pc_address = #{pcAddress},</if>
+            <if test="subnetMask != null">subnet_mask = #{subnetMask},</if>
+            <if test="bankName != null">bank_name = #{bankName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAtmExternalUnitAddressById" parameterType="Long">
+        delete from atm_external_unit_address where id = #{id}
+    </delete>
+
+    <delete id="deleteAtmExternalUnitAddressByIds" parameterType="String">
+        delete from atm_external_unit_address where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

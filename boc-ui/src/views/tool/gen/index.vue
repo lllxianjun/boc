@@ -207,7 +207,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
-      // 唯一标识符
+      // 序号
       uniqueId: "",
       // 选中数组
       ids: [],

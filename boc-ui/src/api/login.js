@@ -1,10 +1,14 @@
 import request from '@/utils/request'
+import { encrypt } from '@/utils/jsencrypt'
 
 // 登录方法
 export function login(username, password, code, uuid) {
+  // 使用 encrypt 函数加密密码  
+  const encryptedPassword = encrypt(password);
   const data = {
     username,
-    password,
+    // password,
+    password: encryptedPassword,
     code,
     uuid
   }

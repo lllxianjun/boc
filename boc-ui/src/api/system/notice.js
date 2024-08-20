@@ -42,3 +42,12 @@ export function delNotice(noticeId) {
     method: 'delete'
   })
 }
+
+// 刷新索引缓存
+export function refreshCache() {
+  return request({
+    url: '/search/fulltext/resetTextCache',
+    method: 'delete'
+  })
+}
+

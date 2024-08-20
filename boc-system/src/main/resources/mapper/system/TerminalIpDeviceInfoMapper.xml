@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boc.system.mapper.TerminalIpDeviceInfoMapper">
+    
+    <resultMap type="TerminalIpDeviceInfo" id="TerminalIpDeviceInfoResult">
+        <result property="id"    column="id"    />
+        <result property="sourceIp"    column="source_ip"    />
+        <result property="macAddress"    column="mac_address"    />
+        <result property="departmentName"    column="department_name"    />
+        <result property="userName"    column="user_name"    />
+        <result property="networkDevice"    column="network_device"    />
+        <result property="networkDeviceIp"    column="network_device_ip"    />
+        <result property="port"    column="port"    />
+        <result property="operatingSystem"    column="operating_system"    />
+        <result property="email"    column="email"    />
+        <result property="phoneNumber"    column="phone_number"    />
+        <result property="branchName"    column="branch_name"    />
+        <result property="subBranchName"    column="sub_branch_name"    />
+        <result property="device"    column="device"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="assetNumber"    column="asset_number"    />
+        <result property="deviceAge"    column="device_age"    />
+        <result property="oldDeviceReplacement"    column="old_device_replacement"    />
+        <result property="localNetworkIpRange"    column="local_network_ip_range"    />
+        <result property="ethernetIp"    column="ethernet_ip"    />
+        <result property="gatewayIp"    column="gateway_ip"    />
+        <result property="pcIpRange"    column="pc_ip_range"    />
+        <result property="atmIpRange"    column="atm_ip_range"    />
+        <result property="monitorIpRange"    column="monitor_ip_range"    />
+        <result property="wlanIpRange"    column="wlan_ip_range"    />
+        <result property="currencyMachineIpRange"    column="currency_machine_ip_range"    />
+        <result property="loopbackIp"    column="loopback_ip"    />
+        <result property="telecomCircuitIp"    column="telecom_circuit_ip"    />
+        <result property="mobileCircuitIp"    column="mobile_circuit_ip"    />
+        <result property="unicomCircuitIp"    column="unicom_circuit_ip"    />
+        <result property="cableTvCircuitIp"    column="cable_tv_circuit_ip"    />
+        <result property="telecomMstpVlan"    column="telecom_mstp_vlan"    />
+        <result property="mobileMstpVlan"    column="mobile_mstp_vlan"    />
+        <result property="unicomMstpVlan"    column="unicom_mstp_vlan"    />
+        <result property="cableTvMstpVlan"    column="cable_tv_mstp_vlan"    />
+        <result property="hostName"    column="host_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectTerminalIpDeviceInfoVo">
+        select id, source_ip, mac_address, department_name, user_name, network_device, network_device_ip, port, operating_system, email, phone_number, branch_name, sub_branch_name, device, device_name, device_type, asset_number, device_age, old_device_replacement, local_network_ip_range, ethernet_ip, gateway_ip, pc_ip_range, atm_ip_range, monitor_ip_range, wlan_ip_range, currency_machine_ip_range, loopback_ip, telecom_circuit_ip, mobile_circuit_ip, unicom_circuit_ip, cable_tv_circuit_ip, telecom_mstp_vlan, mobile_mstp_vlan, unicom_mstp_vlan, cable_tv_mstp_vlan, host_name, remark, created_by, updated_by, created_at, updated_at from terminal_ip_device_info
+    </sql>
+
+    <select id="selectTerminalIpDeviceInfoList" parameterType="TerminalIpDeviceInfo" resultMap="TerminalIpDeviceInfoResult">
+        <include refid="selectTerminalIpDeviceInfoVo"/>
+        <where>  
+            <if test="sourceIp != null  and sourceIp != ''"> and source_ip like concat('%', #{sourceIp}, '%')</if>
+            <if test="macAddress != null  and macAddress != ''"> and mac_address like concat('%', #{macAddress}, '%')</if>
+            <if test="departmentName != null  and departmentName != ''"> and department_name like concat('%', #{departmentName}, '%')</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="networkDevice != null  and networkDevice != ''"> and network_device like concat('%', #{networkDevice}, '%')</if>
+            <if test="networkDeviceIp != null  and networkDeviceIp != ''"> and network_device_ip like concat('%', #{networkDeviceIp}, '%')</if>
+            <if test="port != null  and port != ''"> and port like concat('%', #{port}, '%')</if>
+            <if test="operatingSystem != null  and operatingSystem != ''"> and operating_system like concat('%', #{operatingSystem}, '%')</if>
+            <if test="email != null  and email != ''"> and email like concat('%', #{email}, '%')</if>
+            <if test="phoneNumber != null  and phoneNumber != ''"> and phone_number like concat('%', #{phoneNumber}, '%')</if>
+            <if test="branchName != null  and branchName != ''"> and branch_name like concat('%', #{branchName}, '%')</if>
+            <if test="subBranchName != null  and subBranchName != ''"> and sub_branch_name like concat('%', #{subBranchName}, '%')</if>
+            <if test="device != null  and device != ''"> and device like concat('%', #{device}, '%')</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type like concat('%', #{deviceType}, '%')</if>
+            <if test="assetNumber != null  and assetNumber != ''"> and asset_number like concat('%', #{assetNumber}, '%')</if>
+            <if test="deviceAge != null "> and device_age like concat('%', #{deviceAge}, '%')</if>
+            <if test="oldDeviceReplacement != null "> and old_device_replacement like concat('%', #{oldDeviceReplacement}, '%')</if>
+            <if test="localNetworkIpRange != null  and localNetworkIpRange != ''"> and local_network_ip_range like concat('%', #{localNetworkIpRange}, '%')</if>
+            <if test="ethernetIp != null  and ethernetIp != ''"> and ethernet_ip like concat('%', #{ethernetIp}, '%')</if>
+            <if test="gatewayIp != null  and gatewayIp != ''"> and gateway_ip like concat('%', #{gatewayIp}, '%')</if>
+            <if test="pcIpRange != null  and pcIpRange != ''"> and pc_ip_range like concat('%', #{pcIpRange}, '%')</if>
+            <if test="atmIpRange != null  and atmIpRange != ''"> and atm_ip_range like concat('%', #{atmIpRange}, '%')</if>
+            <if test="monitorIpRange != null  and monitorIpRange != ''"> and monitor_ip_range like concat('%', #{monitorIpRange}, '%')</if>
+            <if test="wlanIpRange != null  and wlanIpRange != ''"> and wlan_ip_range like concat('%', #{wlanIpRange}, '%')</if>
+            <if test="currencyMachineIpRange != null  and currencyMachineIpRange != ''"> and currency_machine_ip_range like concat('%', #{currencyMachineIpRange}, '%')</if>
+            <if test="loopbackIp != null  and loopbackIp != ''"> and loopback_ip like concat('%', #{loopbackIp}, '%')</if>
+            <if test="telecomCircuitIp != null  and telecomCircuitIp != ''"> and telecom_circuit_ip like concat('%', #{telecomCircuitIp}, '%')</if>
+            <if test="mobileCircuitIp != null  and mobileCircuitIp != ''"> and mobile_circuit_ip like concat('%', #{mobileCircuitIp}, '%')</if>
+            <if test="unicomCircuitIp != null  and unicomCircuitIp != ''"> and unicom_circuit_ip like concat('%', #{unicomCircuitIp}, '%')</if>
+            <if test="cableTvCircuitIp != null  and cableTvCircuitIp != ''"> and cable_tv_circuit_ip like concat('%', #{cableTvCircuitIp}, '%')</if>
+            <if test="telecomMstpVlan != null  and telecomMstpVlan != ''"> and telecom_mstp_vlan like concat('%', #{telecomMstpVlan}, '%')</if>
+            <if test="mobileMstpVlan != null  and mobileMstpVlan != ''"> and mobile_mstp_vlan like concat('%', #{mobileMstpVlan}, '%')</if>
+            <if test="unicomMstpVlan != null  and unicomMstpVlan != ''"> and unicom_mstp_vlan like concat('%', #{unicomMstpVlan}, '%')</if>
+            <if test="cableTvMstpVlan != null  and cableTvMstpVlan != ''"> and cable_tv_mstp_vlan like concat('%', #{cableTvMstpVlan}, '%')</if>
+            <if test="hostName != null  and hostName != ''"> and host_name like concat('%', #{hostName}, '%')</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by like concat('%', #{createdBy}, '%')</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by like concat('%', #{updatedBy}, '%')</if>
+            <if test="createdAt != null "> and created_at like concat('%', #{createdAt}, '%')</if>
+            <if test="updatedAt != null "> and updated_at like concat('%', #{updatedAt}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTerminalIpDeviceInfoById" parameterType="Long" resultMap="TerminalIpDeviceInfoResult">
+        <include refid="selectTerminalIpDeviceInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTerminalIpDeviceInfo" parameterType="TerminalIpDeviceInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into terminal_ip_device_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sourceIp != null">source_ip,</if>
+            <if test="macAddress != null">mac_address,</if>
+            <if test="departmentName != null">department_name,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="networkDevice != null">network_device,</if>
+            <if test="networkDeviceIp != null">network_device_ip,</if>
+            <if test="port != null">port,</if>
+            <if test="operatingSystem != null">operating_system,</if>
+            <if test="email != null">email,</if>
+            <if test="phoneNumber != null">phone_number,</if>
+            <if test="branchName != null">branch_name,</if>
+            <if test="subBranchName != null">sub_branch_name,</if>
+            <if test="device != null">device,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="assetNumber != null">asset_number,</if>
+            <if test="deviceAge != null">device_age,</if>
+            <if test="oldDeviceReplacement != null">old_device_replacement,</if>
+            <if test="localNetworkIpRange != null">local_network_ip_range,</if>
+            <if test="ethernetIp != null">ethernet_ip,</if>
+            <if test="gatewayIp != null">gateway_ip,</if>
+            <if test="pcIpRange != null">pc_ip_range,</if>
+            <if test="atmIpRange != null">atm_ip_range,</if>
+            <if test="monitorIpRange != null">monitor_ip_range,</if>
+            <if test="wlanIpRange != null">wlan_ip_range,</if>
+            <if test="currencyMachineIpRange != null">currency_machine_ip_range,</if>
+            <if test="loopbackIp != null">loopback_ip,</if>
+            <if test="telecomCircuitIp != null">telecom_circuit_ip,</if>
+            <if test="mobileCircuitIp != null">mobile_circuit_ip,</if>
+            <if test="unicomCircuitIp != null">unicom_circuit_ip,</if>
+            <if test="cableTvCircuitIp != null">cable_tv_circuit_ip,</if>
+            <if test="telecomMstpVlan != null">telecom_mstp_vlan,</if>
+            <if test="mobileMstpVlan != null">mobile_mstp_vlan,</if>
+            <if test="unicomMstpVlan != null">unicom_mstp_vlan,</if>
+            <if test="cableTvMstpVlan != null">cable_tv_mstp_vlan,</if>
+            <if test="hostName != null">host_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sourceIp != null">#{sourceIp},</if>
+            <if test="macAddress != null">#{macAddress},</if>
+            <if test="departmentName != null">#{departmentName},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="networkDevice != null">#{networkDevice},</if>
+            <if test="networkDeviceIp != null">#{networkDeviceIp},</if>
+            <if test="port != null">#{port},</if>
+            <if test="operatingSystem != null">#{operatingSystem},</if>
+            <if test="email != null">#{email},</if>
+            <if test="phoneNumber != null">#{phoneNumber},</if>
+            <if test="branchName != null">#{branchName},</if>
+            <if test="subBranchName != null">#{subBranchName},</if>
+            <if test="device != null">#{device},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="assetNumber != null">#{assetNumber},</if>
+            <if test="deviceAge != null">#{deviceAge},</if>
+            <if test="oldDeviceReplacement != null">#{oldDeviceReplacement},</if>
+            <if test="localNetworkIpRange != null">#{localNetworkIpRange},</if>
+            <if test="ethernetIp != null">#{ethernetIp},</if>
+            <if test="gatewayIp != null">#{gatewayIp},</if>
+            <if test="pcIpRange != null">#{pcIpRange},</if>
+            <if test="atmIpRange != null">#{atmIpRange},</if>
+            <if test="monitorIpRange != null">#{monitorIpRange},</if>
+            <if test="wlanIpRange != null">#{wlanIpRange},</if>
+            <if test="currencyMachineIpRange != null">#{currencyMachineIpRange},</if>
+            <if test="loopbackIp != null">#{loopbackIp},</if>
+            <if test="telecomCircuitIp != null">#{telecomCircuitIp},</if>
+            <if test="mobileCircuitIp != null">#{mobileCircuitIp},</if>
+            <if test="unicomCircuitIp != null">#{unicomCircuitIp},</if>
+            <if test="cableTvCircuitIp != null">#{cableTvCircuitIp},</if>
+            <if test="telecomMstpVlan != null">#{telecomMstpVlan},</if>
+            <if test="mobileMstpVlan != null">#{mobileMstpVlan},</if>
+            <if test="unicomMstpVlan != null">#{unicomMstpVlan},</if>
+            <if test="cableTvMstpVlan != null">#{cableTvMstpVlan},</if>
+            <if test="hostName != null">#{hostName},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTerminalIpDeviceInfo" parameterType="TerminalIpDeviceInfo">
+        update terminal_ip_device_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sourceIp != null">source_ip = #{sourceIp},</if>
+            <if test="macAddress != null">mac_address = #{macAddress},</if>
+            <if test="departmentName != null">department_name = #{departmentName},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="networkDevice != null">network_device = #{networkDevice},</if>
+            <if test="networkDeviceIp != null">network_device_ip = #{networkDeviceIp},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="operatingSystem != null">operating_system = #{operatingSystem},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="phoneNumber != null">phone_number = #{phoneNumber},</if>
+            <if test="branchName != null">branch_name = #{branchName},</if>
+            <if test="subBranchName != null">sub_branch_name = #{subBranchName},</if>
+            <if test="device != null">device = #{device},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="assetNumber != null">asset_number = #{assetNumber},</if>
+            <if test="deviceAge != null">device_age = #{deviceAge},</if>
+            <if test="oldDeviceReplacement != null">old_device_replacement = #{oldDeviceReplacement},</if>
+            <if test="localNetworkIpRange != null">local_network_ip_range = #{localNetworkIpRange},</if>
+            <if test="ethernetIp != null">ethernet_ip = #{ethernetIp},</if>
+            <if test="gatewayIp != null">gateway_ip = #{gatewayIp},</if>
+            <if test="pcIpRange != null">pc_ip_range = #{pcIpRange},</if>
+            <if test="atmIpRange != null">atm_ip_range = #{atmIpRange},</if>
+            <if test="monitorIpRange != null">monitor_ip_range = #{monitorIpRange},</if>
+            <if test="wlanIpRange != null">wlan_ip_range = #{wlanIpRange},</if>
+            <if test="currencyMachineIpRange != null">currency_machine_ip_range = #{currencyMachineIpRange},</if>
+            <if test="loopbackIp != null">loopback_ip = #{loopbackIp},</if>
+            <if test="telecomCircuitIp != null">telecom_circuit_ip = #{telecomCircuitIp},</if>
+            <if test="mobileCircuitIp != null">mobile_circuit_ip = #{mobileCircuitIp},</if>
+            <if test="unicomCircuitIp != null">unicom_circuit_ip = #{unicomCircuitIp},</if>
+            <if test="cableTvCircuitIp != null">cable_tv_circuit_ip = #{cableTvCircuitIp},</if>
+            <if test="telecomMstpVlan != null">telecom_mstp_vlan = #{telecomMstpVlan},</if>
+            <if test="mobileMstpVlan != null">mobile_mstp_vlan = #{mobileMstpVlan},</if>
+            <if test="unicomMstpVlan != null">unicom_mstp_vlan = #{unicomMstpVlan},</if>
+            <if test="cableTvMstpVlan != null">cable_tv_mstp_vlan = #{cableTvMstpVlan},</if>
+            <if test="hostName != null">host_name = #{hostName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTerminalIpDeviceInfoById" parameterType="Long">
+        delete from terminal_ip_device_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTerminalIpDeviceInfoByIds" parameterType="String">
+        delete from terminal_ip_device_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

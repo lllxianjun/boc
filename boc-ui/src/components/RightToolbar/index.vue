@@ -9,9 +9,9 @@
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="显隐列" placement="top" v-if="columns">
         <el-button size="mini" circle icon="el-icon-menu" @click="showColumn()" v-if="showColumnsType == 'transfer'"/>
-        <el-dropdown trigger="click" :hide-on-click="false" style="padding-left: 12px" v-if="showColumnsType == 'checkbox'">
+        <el-dropdown class="project-container" trigger="click" :hide-on-click="false" style="padding-left: 12px" v-if="showColumnsType == 'checkbox'">
           <el-button size="mini" circle icon="el-icon-menu" />
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu class="project-dropdown" slot="dropdown">
             <template v-for="item in columns">
               <el-dropdown-item :key="item.key">
                 <el-checkbox :checked="item.visible" @change="checkboxChange($event, item.label)" :label="item.label" />
@@ -125,5 +125,23 @@ export default {
 }
 ::v-deep .el-transfer__button:first-child {
   margin-bottom: 10px;
+}
+//新增下拉框样式
+.project-dropdown{
+  //设置高度才能显示出滚动条 !important
+  height:300px;
+  overflow: auto;
+}
+.project-dropdown::-webkit-scrollbar
+{
+    width: 5px;
+    height: 5px;
+    background-color: #F5F5F5;
+}
+.project-dropdown::-webkit-scrollbar-track
+{
+    //-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
 }
 </style>

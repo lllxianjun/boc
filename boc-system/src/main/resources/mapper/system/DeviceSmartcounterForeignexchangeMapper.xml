@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boc.system.mapper.DeviceSmartcounterForeignexchangeMapper">
+    
+    <resultMap type="DeviceSmartcounterForeignexchange" id="DeviceSmartcounterForeignexchangeResult">
+        <result property="deviceId"    column="device_id"    />
+        <result property="usageUnit"    column="usage_unit"    />
+        <result property="threeGNumber"    column="threeGNumber"    />
+        <result property="imsiCode"    column="imsi_code"    />
+        <result property="iccid"    column="iccid"    />
+        <result property="ipAddress"    column="ip_address"    />
+        <result property="routerAddress"    column="router_address"    />
+        <result property="subnetMask"    column="subnet_mask"    />
+        <result property="pcAddress"    column="pc_address"    />
+        <result property="userPassword"    column="user_password"    />
+        <result property="remark"    column="remark"    />
+        <result property="disableTime"    column="disable_time"    />
+        <result property="productionDate"    column="production_date"    />
+        <result property="activationPeriod"    column="activation_period"    />
+        <result property="terminalNumber"    column="terminal_number"    />
+        <result property="iotCardNumber"    column="iot_card_number"    />
+        <result property="simCardNumber"    column="sim_card_number"    />
+        <result property="routerSerialNumber"    column="router_serial_number"    />
+        <result property="routerMac"    column="router_mac"    />
+        <result property="routerSn"    column="router_sn"    />
+        <result property="routerNumber"    column="router_number"    />
+        <result property="routerIotCardNumber"    column="router_iot_card_number"    />
+        <result property="routerSimCardNumber"    column="router_sim_card_number"    />
+        <result property="owningUnit"    column="owning_unit"    />
+        <result property="ipArea"    column="ip_area"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectDeviceSmartcounterForeignexchangeVo">
+        select device_id, usage_unit, threeGNumber, imsi_code, iccid, ip_address, router_address, subnet_mask, pc_address, user_password, remark, disable_time, production_date, activation_period, terminal_number, iot_card_number, sim_card_number, router_serial_number, router_mac, router_sn, router_number, router_iot_card_number, router_sim_card_number, owning_unit, ip_area, device_type, create_by, create_time, update_by, update_time from device_smartcounter_foreignexchange
+    </sql>
+
+    <select id="selectDeviceSmartcounterForeignexchangeList" parameterType="DeviceSmartcounterForeignexchange" resultMap="DeviceSmartcounterForeignexchangeResult">
+        <include refid="selectDeviceSmartcounterForeignexchangeVo"/>
+        <where>  
+            <if test="usageUnit != null  and usageUnit != ''"> and usage_unit = #{usageUnit}</if>
+            <if test="threeGNumber != null  and threeGNumber != ''"> and threeGNumber = #{threeGNumber}</if>
+            <if test="imsiCode != null  and imsiCode != ''"> and imsi_code = #{imsiCode}</if>
+            <if test="iccid != null  and iccid != ''"> and iccid = #{iccid}</if>
+            <if test="ipAddress != null  and ipAddress != ''"> and ip_address = #{ipAddress}</if>
+            <if test="routerAddress != null  and routerAddress != ''"> and router_address = #{routerAddress}</if>
+            <if test="subnetMask != null  and subnetMask != ''"> and subnet_mask = #{subnetMask}</if>
+            <if test="pcAddress != null  and pcAddress != ''"> and pc_address = #{pcAddress}</if>
+            <if test="userPassword != null  and userPassword != ''"> and user_password = #{userPassword}</if>
+            <if test="disableTime != null "> and disable_time = #{disableTime}</if>
+            <if test="productionDate != null "> and production_date = #{productionDate}</if>
+            <if test="activationPeriod != null "> and activation_period = #{activationPeriod}</if>
+            <if test="terminalNumber != null  and terminalNumber != ''"> and terminal_number = #{terminalNumber}</if>
+            <if test="iotCardNumber != null  and iotCardNumber != ''"> and iot_card_number = #{iotCardNumber}</if>
+            <if test="simCardNumber != null  and simCardNumber != ''"> and sim_card_number = #{simCardNumber}</if>
+            <if test="routerSerialNumber != null  and routerSerialNumber != ''"> and router_serial_number = #{routerSerialNumber}</if>
+            <if test="routerMac != null  and routerMac != ''"> and router_mac = #{routerMac}</if>
+            <if test="routerSn != null  and routerSn != ''"> and router_sn = #{routerSn}</if>
+            <if test="routerNumber != null  and routerNumber != ''"> and router_number = #{routerNumber}</if>
+            <if test="routerIotCardNumber != null  and routerIotCardNumber != ''"> and router_iot_card_number = #{routerIotCardNumber}</if>
+            <if test="routerSimCardNumber != null  and routerSimCardNumber != ''"> and router_sim_card_number = #{routerSimCardNumber}</if>
+            <if test="owningUnit != null  and owningUnit != ''"> and owning_unit = #{owningUnit}</if>
+            <if test="ipArea != null  and ipArea != ''"> and ip_area like concat('%', #{ipArea}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type like concat('%', #{deviceType}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectDeviceSmartcounterForeignexchangeByDeviceId" parameterType="Long" resultMap="DeviceSmartcounterForeignexchangeResult">
+        <include refid="selectDeviceSmartcounterForeignexchangeVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+    <insert id="insertDeviceSmartcounterForeignexchange" parameterType="DeviceSmartcounterForeignexchange" useGeneratedKeys="true" keyProperty="deviceId">
+        insert into device_smartcounter_foreignexchange
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="usageUnit != null">usage_unit,</if>
+            <if test="threeGNumber != null">threeGNumber,</if>
+            <if test="imsiCode != null">imsi_code,</if>
+            <if test="iccid != null">iccid,</if>
+            <if test="ipAddress != null">ip_address,</if>
+            <if test="routerAddress != null">router_address,</if>
+            <if test="subnetMask != null">subnet_mask,</if>
+            <if test="pcAddress != null">pc_address,</if>
+            <if test="userPassword != null">user_password,</if>
+            <if test="remark != null">remark,</if>
+            <if test="disableTime != null">disable_time,</if>
+            <if test="productionDate != null">production_date,</if>
+            <if test="activationPeriod != null">activation_period,</if>
+            <if test="terminalNumber != null">terminal_number,</if>
+            <if test="iotCardNumber != null">iot_card_number,</if>
+            <if test="simCardNumber != null">sim_card_number,</if>
+            <if test="routerSerialNumber != null">router_serial_number,</if>
+            <if test="routerMac != null">router_mac,</if>
+            <if test="routerSn != null">router_sn,</if>
+            <if test="routerNumber != null">router_number,</if>
+            <if test="routerIotCardNumber != null">router_iot_card_number,</if>
+            <if test="routerSimCardNumber != null">router_sim_card_number,</if>
+            <if test="owningUnit != null">owning_unit,</if>
+            <if test="ipArea != null">ip_area,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="usageUnit != null">#{usageUnit},</if>
+            <if test="threeGNumber != null">#{threeGNumber},</if>
+            <if test="imsiCode != null">#{imsiCode},</if>
+            <if test="iccid != null">#{iccid},</if>
+            <if test="ipAddress != null">#{ipAddress},</if>
+            <if test="routerAddress != null">#{routerAddress},</if>
+            <if test="subnetMask != null">#{subnetMask},</if>
+            <if test="pcAddress != null">#{pcAddress},</if>
+            <if test="userPassword != null">#{userPassword},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="disableTime != null">#{disableTime},</if>
+            <if test="productionDate != null">#{productionDate},</if>
+            <if test="activationPeriod != null">#{activationPeriod},</if>
+            <if test="terminalNumber != null">#{terminalNumber},</if>
+            <if test="iotCardNumber != null">#{iotCardNumber},</if>
+            <if test="simCardNumber != null">#{simCardNumber},</if>
+            <if test="routerSerialNumber != null">#{routerSerialNumber},</if>
+            <if test="routerMac != null">#{routerMac},</if>
+            <if test="routerSn != null">#{routerSn},</if>
+            <if test="routerNumber != null">#{routerNumber},</if>
+            <if test="routerIotCardNumber != null">#{routerIotCardNumber},</if>
+            <if test="routerSimCardNumber != null">#{routerSimCardNumber},</if>
+            <if test="owningUnit != null">#{owningUnit},</if>
+            <if test="ipArea != null">#{ipArea},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeviceSmartcounterForeignexchange" parameterType="DeviceSmartcounterForeignexchange">
+        update device_smartcounter_foreignexchange
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="usageUnit != null">usage_unit = #{usageUnit},</if>
+            <if test="threeGNumber != null">threeGNumber = #{threeGNumber},</if>
+            <if test="imsiCode != null">imsi_code = #{imsiCode},</if>
+            <if test="iccid != null">iccid = #{iccid},</if>
+            <if test="ipAddress != null">ip_address = #{ipAddress},</if>
+            <if test="routerAddress != null">router_address = #{routerAddress},</if>
+            <if test="subnetMask != null">subnet_mask = #{subnetMask},</if>
+            <if test="pcAddress != null">pc_address = #{pcAddress},</if>
+            <if test="userPassword != null">user_password = #{userPassword},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="disableTime != null">disable_time = #{disableTime},</if>
+            <if test="productionDate != null">production_date = #{productionDate},</if>
+            <if test="activationPeriod != null">activation_period = #{activationPeriod},</if>
+            <if test="terminalNumber != null">terminal_number = #{terminalNumber},</if>
+            <if test="iotCardNumber != null">iot_card_number = #{iotCardNumber},</if>
+            <if test="simCardNumber != null">sim_card_number = #{simCardNumber},</if>
+            <if test="routerSerialNumber != null">router_serial_number = #{routerSerialNumber},</if>
+            <if test="routerMac != null">router_mac = #{routerMac},</if>
+            <if test="routerSn != null">router_sn = #{routerSn},</if>
+            <if test="routerNumber != null">router_number = #{routerNumber},</if>
+            <if test="routerIotCardNumber != null">router_iot_card_number = #{routerIotCardNumber},</if>
+            <if test="routerSimCardNumber != null">router_sim_card_number = #{routerSimCardNumber},</if>
+            <if test="owningUnit != null">owning_unit = #{owningUnit},</if>
+            <if test="ipArea != null">ip_area = #{ipArea},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where device_id = #{deviceId}
+    </update>
+
+    <delete id="deleteDeviceSmartcounterForeignexchangeByDeviceId" parameterType="Long">
+        delete from device_smartcounter_foreignexchange where device_id = #{deviceId}
+    </delete>
+
+    <delete id="deleteDeviceSmartcounterForeignexchangeByDeviceIds" parameterType="String">
+        delete from device_smartcounter_foreignexchange where device_id in 
+        <foreach item="deviceId" collection="array" open="(" separator="," close=")">
+            #{deviceId}
+        </foreach>
+    </delete>
+</mapper>

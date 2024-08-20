@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boc.system.mapper.DmzApplicationIpMapper">
+    
+    <resultMap type="DmzApplicationIp" id="DmzApplicationIpResult">
+        <result property="id"    column="id"    />
+        <result property="externalAddressMappingVpn"    column="external_address_mapping_vpn"    />
+        <result property="externalAddress"    column="external_address"    />
+        <result property="applicationType"    column="application_type"    />
+        <result property="applicationDate"    column="application_date"    />
+        <result property="externalAccessAddress"    column="external_access_address"    />
+        <result property="wan"    column="wan"    />
+        <result property="externalRouterAddressPort"    column="external_router_address_port"    />
+        <result property="category"    column="category"    />
+        <result property="user"    column="user"    />
+        <result property="externalAddressMappingInternal"    column="external_address_mapping_internal"    />
+        <result property="internalAccessSourceAddress"    column="internal_access_source_address"    />
+        <result property="applicationName"    column="application_name"    />
+        <result property="targetAccessPort"    column="target_access_port"    />
+        <result property="accessRouterName"    column="access_router_name"    />
+        <result property="dedicatedLineName"    column="dedicated_line_name"    />
+        <result property="internalAddressMappingExternal"    column="internal_address_mapping_external"    />
+        <result property="internalAddress"    column="internal_address"    />
+        <result property="externalAccessSourceAddress"    column="external_access_source_address"    />
+        <result property="portUsageDescription"    column="port_usage_description"    />
+        <result property="isNecessaryPort"    column="is_necessary_port"    />
+        <result property="dmzIpAddress"    column="dmz_ip_address"    />
+        <result property="internalOrExternalAddress"    column="internal_or_external_address"    />
+        <result property="accessPort"    column="access_port"    />
+        <result property="associatedAccessAddress"    column="associated_access_address"    />
+        <result property="portUsage"    column="port_usage"    />
+        <result property="internalApplicationServer"    column="internal_application_server"    />
+        <result property="externalProxyCounter"    column="external_proxy_counter"    />
+        <result property="lineTypePortIp"    column="line_type_port_ip"    />
+        <result property="openPort"    column="open_port"    />
+        <result property="initiator"    column="initiator"    />
+        <result property="ip"    column="ip"    />
+        <result property="purpose"    column="purpose"    />
+        <result property="externalAddressSegment"    column="external_address_segment"    />
+        <result property="internalAddressSegment"    column="internal_address_segment"    />
+        <result property="application"    column="application"    />
+        <result property="accessSource"    column="access_source"    />
+        <result property="router"    column="router"    />
+        <result property="internalAddressMappingDmz"    column="internal_address_mapping_dmz"    />
+        <result property="port"    column="port"    />
+        <result property="remark"    column="remark"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectDmzApplicationIpVo">
+        select id, external_address_mapping_vpn, external_address, application_type, application_date, external_access_address, wan, external_router_address_port, category, user, external_address_mapping_internal, internal_access_source_address, application_name, target_access_port, access_router_name, dedicated_line_name, internal_address_mapping_external, internal_address, external_access_source_address, port_usage_description, is_necessary_port, dmz_ip_address, internal_or_external_address, access_port, associated_access_address, port_usage, internal_application_server, external_proxy_counter, line_type_port_ip, open_port, initiator, ip, purpose, external_address_segment, internal_address_segment, application, access_source, router, internal_address_mapping_dmz, port, remark, created_by, created_time, updated_by, updated_time from dmz_application_ip
+    </sql>
+
+    <select id="selectDmzApplicationIpList" parameterType="DmzApplicationIp" resultMap="DmzApplicationIpResult">
+        <include refid="selectDmzApplicationIpVo"/>
+        <where>  
+            <if test="externalAddressMappingVpn != null  and externalAddressMappingVpn != ''"> and external_address_mapping_vpn like concat('%', #{externalAddressMappingVpn}, '%')</if>
+            <if test="externalAddress != null  and externalAddress != ''"> and external_address like concat('%', #{externalAddress}, '%')</if>
+            <if test="applicationType != null  and applicationType != ''"> and application_type like concat('%', #{applicationType}, '%')</if>
+            <if test="applicationDate != null "> and application_date like concat('%', #{applicationDate}, '%')</if>
+            <if test="externalAccessAddress != null  and externalAccessAddress != ''"> and external_access_address like concat('%', #{externalAccessAddress}, '%')</if>
+            <if test="wan != null  and wan != ''"> and wan like concat('%', #{wan}, '%')</if>
+            <if test="externalRouterAddressPort != null  and externalRouterAddressPort != ''"> and external_router_address_port like concat('%', #{externalRouterAddressPort}, '%')</if>
+            <if test="category != null  and category != ''"> and category like concat('%', #{category}, '%')</if>
+            <if test="user != null  and user != ''"> and user like concat('%', #{user}, '%')</if>
+            <if test="externalAddressMappingInternal != null  and externalAddressMappingInternal != ''"> and external_address_mapping_internal like concat('%', #{externalAddressMappingInternal}, '%')</if>
+            <if test="internalAccessSourceAddress != null  and internalAccessSourceAddress != ''"> and internal_access_source_address like concat('%', #{internalAccessSourceAddress}, '%')</if>
+            <if test="applicationName != null  and applicationName != ''"> and application_name like concat('%', #{applicationName}, '%')</if>
+            <if test="targetAccessPort != null  and targetAccessPort != ''"> and target_access_port like concat('%', #{targetAccessPort}, '%')</if>
+            <if test="accessRouterName != null  and accessRouterName != ''"> and access_router_name like concat('%', #{accessRouterName}, '%')</if>
+            <if test="dedicatedLineName != null  and dedicatedLineName != ''"> and dedicated_line_name like concat('%', #{dedicatedLineName}, '%')</if>
+            <if test="internalAddressMappingExternal != null  and internalAddressMappingExternal != ''"> and internal_address_mapping_external like concat('%', #{internalAddressMappingExternal}, '%')</if>
+            <if test="internalAddress != null  and internalAddress != ''"> and internal_address like concat('%', #{internalAddress}, '%')</if>
+            <if test="externalAccessSourceAddress != null  and externalAccessSourceAddress != ''"> and external_access_source_address like concat('%', #{externalAccessSourceAddress}, '%')</if>
+            <if test="portUsageDescription != null  and portUsageDescription != ''"> and port_usage_description like concat('%', #{portUsageDescription}, '%')</if>
+            <if test="isNecessaryPort != null  and isNecessaryPort != ''"> and is_necessary_port like concat('%', #{isNecessaryPort}, '%')</if>
+            <if test="dmzIpAddress != null  and dmzIpAddress != ''"> and dmz_ip_address like concat('%', #{dmzIpAddress}, '%')</if>
+            <if test="internalOrExternalAddress != null  and internalOrExternalAddress != ''"> and internal_or_external_address like concat('%', #{internalOrExternalAddress}, '%')</if>
+            <if test="accessPort != null  and accessPort != ''"> and access_port like concat('%', #{accessPort}, '%')</if>
+            <if test="associatedAccessAddress != null  and associatedAccessAddress != ''"> and associated_access_address like concat('%', #{associatedAccessAddress}, '%')</if>
+            <if test="portUsage != null  and portUsage != ''"> and port_usage like concat('%', #{portUsage}, '%')</if>
+            <if test="internalApplicationServer != null  and internalApplicationServer != ''"> and internal_application_server like concat('%', #{internalApplicationServer}, '%')</if>
+            <if test="externalProxyCounter != null  and externalProxyCounter != ''"> and external_proxy_counter like concat('%', #{externalProxyCounter}, '%')</if>
+            <if test="lineTypePortIp != null  and lineTypePortIp != ''"> and line_type_port_ip like concat('%', #{lineTypePortIp}, '%')</if>
+            <if test="openPort != null  and openPort != ''"> and open_port like concat('%', #{openPort}, '%')</if>
+            <if test="initiator != null  and initiator != ''"> and initiator like concat('%', #{initiator}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip like concat('%', #{ip}, '%')</if>
+            <if test="purpose != null  and purpose != ''"> and purpose like concat('%', #{purpose}, '%')</if>
+            <if test="externalAddressSegment != null  and externalAddressSegment != ''"> and external_address_segment like concat('%', #{externalAddressSegment}, '%')</if>
+            <if test="internalAddressSegment != null  and internalAddressSegment != ''"> and internal_address_segment like concat('%', #{internalAddressSegment}, '%')</if>
+            <if test="application != null  and application != ''"> and application like concat('%', #{application}, '%')</if>
+            <if test="accessSource != null  and accessSource != ''"> and access_source like concat('%', #{accessSource}, '%')</if>
+            <if test="router != null  and router != ''"> and router like concat('%', #{router}, '%')</if>
+            <if test="internalAddressMappingDmz != null  and internalAddressMappingDmz != ''"> and internal_address_mapping_dmz like concat('%', #{internalAddressMappingDmz}, '%')</if>
+            <if test="port != null  and port != ''"> and port like concat('%', #{port}, '%')</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by like concat('%', #{createdBy}, '%')</if>
+            <if test="createdTime != null "> and created_time like concat('%', #{createdTime}, '%')</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by like concat('%', #{updatedBy}, '%')</if>
+            <if test="updatedTime != null "> and updated_time like concat('%', #{updatedTime}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectDmzApplicationIpById" parameterType="Long" resultMap="DmzApplicationIpResult">
+        <include refid="selectDmzApplicationIpVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDmzApplicationIp" parameterType="DmzApplicationIp" useGeneratedKeys="true" keyProperty="id">
+        insert into dmz_application_ip
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="externalAddressMappingVpn != null">external_address_mapping_vpn,</if>
+            <if test="externalAddress != null">external_address,</if>
+            <if test="applicationType != null">application_type,</if>
+            <if test="applicationDate != null">application_date,</if>
+            <if test="externalAccessAddress != null">external_access_address,</if>
+            <if test="wan != null">wan,</if>
+            <if test="externalRouterAddressPort != null">external_router_address_port,</if>
+            <if test="category != null">category,</if>
+            <if test="user != null">user,</if>
+            <if test="externalAddressMappingInternal != null">external_address_mapping_internal,</if>
+            <if test="internalAccessSourceAddress != null">internal_access_source_address,</if>
+            <if test="applicationName != null">application_name,</if>
+            <if test="targetAccessPort != null">target_access_port,</if>
+            <if test="accessRouterName != null">access_router_name,</if>
+            <if test="dedicatedLineName != null">dedicated_line_name,</if>
+            <if test="internalAddressMappingExternal != null">internal_address_mapping_external,</if>
+            <if test="internalAddress != null">internal_address,</if>
+            <if test="externalAccessSourceAddress != null">external_access_source_address,</if>
+            <if test="portUsageDescription != null">port_usage_description,</if>
+            <if test="isNecessaryPort != null">is_necessary_port,</if>
+            <if test="dmzIpAddress != null">dmz_ip_address,</if>
+            <if test="internalOrExternalAddress != null">internal_or_external_address,</if>
+            <if test="accessPort != null">access_port,</if>
+            <if test="associatedAccessAddress != null">associated_access_address,</if>
+            <if test="portUsage != null">port_usage,</if>
+            <if test="internalApplicationServer != null">internal_application_server,</if>
+            <if test="externalProxyCounter != null">external_proxy_counter,</if>
+            <if test="lineTypePortIp != null">line_type_port_ip,</if>
+            <if test="openPort != null">open_port,</if>
+            <if test="initiator != null">initiator,</if>
+            <if test="ip != null">ip,</if>
+            <if test="purpose != null">purpose,</if>
+            <if test="externalAddressSegment != null">external_address_segment,</if>
+            <if test="internalAddressSegment != null">internal_address_segment,</if>
+            <if test="application != null">application,</if>
+            <if test="accessSource != null">access_source,</if>
+            <if test="router != null">router,</if>
+            <if test="internalAddressMappingDmz != null">internal_address_mapping_dmz,</if>
+            <if test="port != null">port,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="externalAddressMappingVpn != null">#{externalAddressMappingVpn},</if>
+            <if test="externalAddress != null">#{externalAddress},</if>
+            <if test="applicationType != null">#{applicationType},</if>
+            <if test="applicationDate != null">#{applicationDate},</if>
+            <if test="externalAccessAddress != null">#{externalAccessAddress},</if>
+            <if test="wan != null">#{wan},</if>
+            <if test="externalRouterAddressPort != null">#{externalRouterAddressPort},</if>
+            <if test="category != null">#{category},</if>
+            <if test="user != null">#{user},</if>
+            <if test="externalAddressMappingInternal != null">#{externalAddressMappingInternal},</if>
+            <if test="internalAccessSourceAddress != null">#{internalAccessSourceAddress},</if>
+            <if test="applicationName != null">#{applicationName},</if>
+            <if test="targetAccessPort != null">#{targetAccessPort},</if>
+            <if test="accessRouterName != null">#{accessRouterName},</if>
+            <if test="dedicatedLineName != null">#{dedicatedLineName},</if>
+            <if test="internalAddressMappingExternal != null">#{internalAddressMappingExternal},</if>
+            <if test="internalAddress != null">#{internalAddress},</if>
+            <if test="externalAccessSourceAddress != null">#{externalAccessSourceAddress},</if>
+            <if test="portUsageDescription != null">#{portUsageDescription},</if>
+            <if test="isNecessaryPort != null">#{isNecessaryPort},</if>
+            <if test="dmzIpAddress != null">#{dmzIpAddress},</if>
+            <if test="internalOrExternalAddress != null">#{internalOrExternalAddress},</if>
+            <if test="accessPort != null">#{accessPort},</if>
+            <if test="associatedAccessAddress != null">#{associatedAccessAddress},</if>
+            <if test="portUsage != null">#{portUsage},</if>
+            <if test="internalApplicationServer != null">#{internalApplicationServer},</if>
+            <if test="externalProxyCounter != null">#{externalProxyCounter},</if>
+            <if test="lineTypePortIp != null">#{lineTypePortIp},</if>
+            <if test="openPort != null">#{openPort},</if>
+            <if test="initiator != null">#{initiator},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="purpose != null">#{purpose},</if>
+            <if test="externalAddressSegment != null">#{externalAddressSegment},</if>
+            <if test="internalAddressSegment != null">#{internalAddressSegment},</if>
+            <if test="application != null">#{application},</if>
+            <if test="accessSource != null">#{accessSource},</if>
+            <if test="router != null">#{router},</if>
+            <if test="internalAddressMappingDmz != null">#{internalAddressMappingDmz},</if>
+            <if test="port != null">#{port},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDmzApplicationIp" parameterType="DmzApplicationIp">
+        update dmz_application_ip
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="externalAddressMappingVpn != null">external_address_mapping_vpn = #{externalAddressMappingVpn},</if>
+            <if test="externalAddress != null">external_address = #{externalAddress},</if>
+            <if test="applicationType != null">application_type = #{applicationType},</if>
+            <if test="applicationDate != null">application_date = #{applicationDate},</if>
+            <if test="externalAccessAddress != null">external_access_address = #{externalAccessAddress},</if>
+            <if test="wan != null">wan = #{wan},</if>
+            <if test="externalRouterAddressPort != null">external_router_address_port = #{externalRouterAddressPort},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="user != null">user = #{user},</if>
+            <if test="externalAddressMappingInternal != null">external_address_mapping_internal = #{externalAddressMappingInternal},</if>
+            <if test="internalAccessSourceAddress != null">internal_access_source_address = #{internalAccessSourceAddress},</if>
+            <if test="applicationName != null">application_name = #{applicationName},</if>
+            <if test="targetAccessPort != null">target_access_port = #{targetAccessPort},</if>
+            <if test="accessRouterName != null">access_router_name = #{accessRouterName},</if>
+            <if test="dedicatedLineName != null">dedicated_line_name = #{dedicatedLineName},</if>
+            <if test="internalAddressMappingExternal != null">internal_address_mapping_external = #{internalAddressMappingExternal},</if>
+            <if test="internalAddress != null">internal_address = #{internalAddress},</if>
+            <if test="externalAccessSourceAddress != null">external_access_source_address = #{externalAccessSourceAddress},</if>
+            <if test="portUsageDescription != null">port_usage_description = #{portUsageDescription},</if>
+            <if test="isNecessaryPort != null">is_necessary_port = #{isNecessaryPort},</if>
+            <if test="dmzIpAddress != null">dmz_ip_address = #{dmzIpAddress},</if>
+            <if test="internalOrExternalAddress != null">internal_or_external_address = #{internalOrExternalAddress},</if>
+            <if test="accessPort != null">access_port = #{accessPort},</if>
+            <if test="associatedAccessAddress != null">associated_access_address = #{associatedAccessAddress},</if>
+            <if test="portUsage != null">port_usage = #{portUsage},</if>
+            <if test="internalApplicationServer != null">internal_application_server = #{internalApplicationServer},</if>
+            <if test="externalProxyCounter != null">external_proxy_counter = #{externalProxyCounter},</if>
+            <if test="lineTypePortIp != null">line_type_port_ip = #{lineTypePortIp},</if>
+            <if test="openPort != null">open_port = #{openPort},</if>
+            <if test="initiator != null">initiator = #{initiator},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="purpose != null">purpose = #{purpose},</if>
+            <if test="externalAddressSegment != null">external_address_segment = #{externalAddressSegment},</if>
+            <if test="internalAddressSegment != null">internal_address_segment = #{internalAddressSegment},</if>
+            <if test="application != null">application = #{application},</if>
+            <if test="accessSource != null">access_source = #{accessSource},</if>
+            <if test="router != null">router = #{router},</if>
+            <if test="internalAddressMappingDmz != null">internal_address_mapping_dmz = #{internalAddressMappingDmz},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDmzApplicationIpById" parameterType="Long">
+        delete from dmz_application_ip where id = #{id}
+    </delete>
+
+    <delete id="deleteDmzApplicationIpByIds" parameterType="String">
+        delete from dmz_application_ip where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

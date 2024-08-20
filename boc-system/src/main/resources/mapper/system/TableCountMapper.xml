@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boc.system.mapper.TableCountMapper">
+
+    <select id="countAtmExternalUnitAddress" resultType="int">
+        SELECT COUNT(*) FROM atm_external_unit_address
+    </select>
+
+    <select id="countDeviceSmartcounterForeignexchange" resultType="int">
+        SELECT COUNT(*) FROM device_smartcounter_foreignexchange
+    </select>
+
+    <select id="countDmzApplicationIp" resultType="int">
+        SELECT COUNT(*) FROM dmz_application_ip
+    </select>
+
+    <select id="countProvinceFloorTerminalNetworkSegment" resultType="int">
+        SELECT COUNT(*) FROM province_floor_terminal_network_segment
+    </select>
+
+    <select id="countTerminalIpDeviceInfo" resultType="int">
+        SELECT COUNT(*) FROM terminal_ip_device_info
+    </select>
+
+</mapper>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boc.system.mapper.ProvinceFloorTerminalNetworkSegmentMapper">
+    
+    <resultMap type="ProvinceFloorTerminalNetworkSegment" id="ProvinceFloorTerminalNetworkSegmentResult">
+        <result property="id"    column="id"    />
+        <result property="ipAddress"    column="ip_address"    />
+        <result property="hostType"    column="host_type"    />
+        <result property="applicationType"    column="application_type"    />
+        <result property="hostname"    column="hostname"    />
+        <result property="switchIp"    column="switch_ip"    />
+        <result property="switchPort"    column="switch_port"    />
+        <result property="deviceInfoPoint"    column="device_info_point"    />
+        <result property="location"    column="location"    />
+        <result property="admin"    column="admin"    />
+        <result property="assetNumber"    column="asset_number"    />
+        <result property="recordDate"    column="record_date"    />
+        <result property="subnet"    column="subnet"    />
+        <result property="vlan"    column="vlan"    />
+        <result property="controlList"    column="control_list"    />
+        <result property="usageType"    column="usage_type"    />
+        <result property="distribution"    column="distribution"    />
+        <result property="originalServerIp"    column="original_server_ip"    />
+        <result property="rack"    column="rack"    />
+        <result property="user"    column="user"    />
+        <result property="phoneInfoPoint"    column="phone_info_point"    />
+        <result property="isEmptyRecycled"    column="is_empty_recycled"    />
+        <result property="assetInfoNumber"    column="asset_info_number"    />
+        <result property="commissioningDate"    column="commissioning_date"    />
+        <result property="natIpAddress1"    column="nat_ip_address_1"    />
+        <result property="version"    column="version"    />
+        <result property="lifespan"    column="lifespan"    />
+        <result property="macAddress"    column="mac_address"    />
+        <result property="computerName"    column="computer_name"    />
+        <result property="gateway"    column="gateway"    />
+        <result property="networkDivision"    column="network_division"    />
+        <result property="ipArea"    column="ip_area"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="remark"    column="remark"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectProvinceFloorTerminalNetworkSegmentVo">
+        select id, ip_address, host_type, application_type, hostname, switch_ip, switch_port, device_info_point, location, admin, asset_number, record_date, subnet, vlan, control_list, usage_type, distribution, original_server_ip, rack, user, phone_info_point, is_empty_recycled, asset_info_number, commissioning_date, nat_ip_address_1, version, lifespan, mac_address, computer_name, gateway, network_division, ip_area, device_type, remark, created_by, updated_by, created_at, updated_at from province_floor_terminal_network_segment
+    </sql>
+
+    <select id="selectProvinceFloorTerminalNetworkSegmentList" parameterType="ProvinceFloorTerminalNetworkSegment" resultMap="ProvinceFloorTerminalNetworkSegmentResult">
+        <include refid="selectProvinceFloorTerminalNetworkSegmentVo"/>
+        <where>  
+            <if test="ipAddress != null  and ipAddress != ''"> and ip_address like concat('%', #{ipAddress}, '%')</if>
+            <if test="hostType != null  and hostType != ''"> and host_type like concat('%', #{hostType}, '%')</if>
+            <if test="applicationType != null  and applicationType != ''"> and application_type like concat('%', #{applicationType}, '%')</if>
+            <if test="hostname != null  and hostname != ''"> and hostname like concat('%', #{hostname}, '%')</if>
+            <if test="switchIp != null  and switchIp != ''"> and switch_ip like concat('%', #{switchIp}, '%')</if>
+            <if test="switchPort != null  and switchPort != ''"> and switch_port like concat('%', #{switchPort}, '%')</if>
+            <if test="deviceInfoPoint != null  and deviceInfoPoint != ''"> and device_info_point like concat('%', #{deviceInfoPoint}, '%')</if>
+            <if test="location != null  and location != ''"> and location like concat('%', #{location}, '%')</if>
+            <if test="admin != null  and admin != ''"> and admin like concat('%', #{admin}, '%')</if>
+            <if test="assetNumber != null  and assetNumber != ''"> and asset_number like concat('%', #{assetNumber}, '%')</if>
+            <if test="recordDate != null "> and record_date like concat('%', #{recordDate}, '%')</if>
+            <if test="subnet != null  and subnet != ''"> and subnet like concat('%', #{subnet}, '%')</if>
+            <if test="vlan != null  and vlan != ''"> and vlan like concat('%', #{vlan}, '%')</if>
+            <if test="controlList != null  and controlList != ''"> and control_list like concat('%', #{controlList}, '%')</if>
+            <if test="usageType != null  and usageType != ''"> and usage_type like concat('%', #{usageType}, '%')</if>
+            <if test="distribution != null  and distribution != ''"> and distribution like concat('%', #{distribution}, '%')</if>
+            <if test="originalServerIp != null  and originalServerIp != ''"> and original_server_ip like concat('%', #{originalServerIp}, '%')</if>
+            <if test="rack != null  and rack != ''"> and rack like concat('%', #{rack}, '%')</if>
+            <if test="user != null  and user != ''"> and user like concat('%', #{user}, '%')</if>
+            <if test="phoneInfoPoint != null  and phoneInfoPoint != ''"> and phone_info_point like concat('%', #{phoneInfoPoint}, '%')</if>
+            <if test="isEmptyRecycled != null  and isEmptyRecycled != ''"> and is_empty_recycled like concat('%', #{isEmptyRecycled}, '%')</if>
+            <if test="assetInfoNumber != null  and assetInfoNumber != ''"> and asset_info_number like concat('%', #{assetInfoNumber}, '%')</if>
+            <if test="commissioningDate != null "> and commissioning_date like concat('%', #{commissioningDate}, '%')</if>
+            <if test="natIpAddress1 != null  and natIpAddress1 != ''"> and nat_ip_address_1 like concat('%', #{natIpAddress1}, '%')</if>
+            <if test="version != null  and version != ''"> and version like concat('%', #{version}, '%')</if>
+            <if test="lifespan != null  and lifespan != ''"> and lifespan like concat('%', #{lifespan}, '%')</if>
+            <if test="macAddress != null  and macAddress != ''"> and mac_address like concat('%', #{macAddress}, '%')</if>
+            <if test="computerName != null  and computerName != ''"> and computer_name like concat('%', #{computerName}, '%')</if>
+            <if test="gateway != null  and gateway != ''"> and gateway like concat('%', #{gateway}, '%')</if>
+            <if test="networkDivision != null  and networkDivision != ''"> and network_division like concat('%', #{networkDivision}, '%')</if>
+            <if test="ipArea != null  and ipArea != ''"> and ip_area like concat('%', #{ipArea}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type like concat('%', #{deviceType}, '%')</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by like concat('%', #{createdBy}, '%')</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by like concat('%', #{updatedBy}, '%')</if>
+            <if test="createdAt != null "> and created_at like concat('%', #{createdAt}, '%')</if>
+            <if test="updatedAt != null "> and updated_at like concat('%', #{updatedAt}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectProvinceFloorTerminalNetworkSegmentById" parameterType="Long" resultMap="ProvinceFloorTerminalNetworkSegmentResult">
+        <include refid="selectProvinceFloorTerminalNetworkSegmentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProvinceFloorTerminalNetworkSegment" parameterType="ProvinceFloorTerminalNetworkSegment" useGeneratedKeys="true" keyProperty="id">
+        insert into province_floor_terminal_network_segment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ipAddress != null">ip_address,</if>
+            <if test="hostType != null">host_type,</if>
+            <if test="applicationType != null">application_type,</if>
+            <if test="hostname != null">hostname,</if>
+            <if test="switchIp != null">switch_ip,</if>
+            <if test="switchPort != null">switch_port,</if>
+            <if test="deviceInfoPoint != null">device_info_point,</if>
+            <if test="location != null">location,</if>
+            <if test="admin != null">admin,</if>
+            <if test="assetNumber != null">asset_number,</if>
+            <if test="recordDate != null">record_date,</if>
+            <if test="subnet != null">subnet,</if>
+            <if test="vlan != null">vlan,</if>
+            <if test="controlList != null">control_list,</if>
+            <if test="usageType != null">usage_type,</if>
+            <if test="distribution != null">distribution,</if>
+            <if test="originalServerIp != null">original_server_ip,</if>
+            <if test="rack != null">rack,</if>
+            <if test="user != null">user,</if>
+            <if test="phoneInfoPoint != null">phone_info_point,</if>
+            <if test="isEmptyRecycled != null">is_empty_recycled,</if>
+            <if test="assetInfoNumber != null">asset_info_number,</if>
+            <if test="commissioningDate != null">commissioning_date,</if>
+            <if test="natIpAddress1 != null">nat_ip_address_1,</if>
+            <if test="version != null">version,</if>
+            <if test="lifespan != null">lifespan,</if>
+            <if test="macAddress != null">mac_address,</if>
+            <if test="computerName != null">computer_name,</if>
+            <if test="gateway != null">gateway,</if>
+            <if test="networkDivision != null">network_division,</if>
+            <if test="ipArea != null">ip_area,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ipAddress != null">#{ipAddress},</if>
+            <if test="hostType != null">#{hostType},</if>
+            <if test="applicationType != null">#{applicationType},</if>
+            <if test="hostname != null">#{hostname},</if>
+            <if test="switchIp != null">#{switchIp},</if>
+            <if test="switchPort != null">#{switchPort},</if>
+            <if test="deviceInfoPoint != null">#{deviceInfoPoint},</if>
+            <if test="location != null">#{location},</if>
+            <if test="admin != null">#{admin},</if>
+            <if test="assetNumber != null">#{assetNumber},</if>
+            <if test="recordDate != null">#{recordDate},</if>
+            <if test="subnet != null">#{subnet},</if>
+            <if test="vlan != null">#{vlan},</if>
+            <if test="controlList != null">#{controlList},</if>
+            <if test="usageType != null">#{usageType},</if>
+            <if test="distribution != null">#{distribution},</if>
+            <if test="originalServerIp != null">#{originalServerIp},</if>
+            <if test="rack != null">#{rack},</if>
+            <if test="user != null">#{user},</if>
+            <if test="phoneInfoPoint != null">#{phoneInfoPoint},</if>
+            <if test="isEmptyRecycled != null">#{isEmptyRecycled},</if>
+            <if test="assetInfoNumber != null">#{assetInfoNumber},</if>
+            <if test="commissioningDate != null">#{commissioningDate},</if>
+            <if test="natIpAddress1 != null">#{natIpAddress1},</if>
+            <if test="version != null">#{version},</if>
+            <if test="lifespan != null">#{lifespan},</if>
+            <if test="macAddress != null">#{macAddress},</if>
+            <if test="computerName != null">#{computerName},</if>
+            <if test="gateway != null">#{gateway},</if>
+            <if test="networkDivision != null">#{networkDivision},</if>
+            <if test="ipArea != null">#{ipArea},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProvinceFloorTerminalNetworkSegment" parameterType="ProvinceFloorTerminalNetworkSegment">
+        update province_floor_terminal_network_segment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ipAddress != null">ip_address = #{ipAddress},</if>
+            <if test="hostType != null">host_type = #{hostType},</if>
+            <if test="applicationType != null">application_type = #{applicationType},</if>
+            <if test="hostname != null">hostname = #{hostname},</if>
+            <if test="switchIp != null">switch_ip = #{switchIp},</if>
+            <if test="switchPort != null">switch_port = #{switchPort},</if>
+            <if test="deviceInfoPoint != null">device_info_point = #{deviceInfoPoint},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="admin != null">admin = #{admin},</if>
+            <if test="assetNumber != null">asset_number = #{assetNumber},</if>
+            <if test="recordDate != null">record_date = #{recordDate},</if>
+            <if test="subnet != null">subnet = #{subnet},</if>
+            <if test="vlan != null">vlan = #{vlan},</if>
+            <if test="controlList != null">control_list = #{controlList},</if>
+            <if test="usageType != null">usage_type = #{usageType},</if>
+            <if test="distribution != null">distribution = #{distribution},</if>
+            <if test="originalServerIp != null">original_server_ip = #{originalServerIp},</if>
+            <if test="rack != null">rack = #{rack},</if>
+            <if test="user != null">user = #{user},</if>
+            <if test="phoneInfoPoint != null">phone_info_point = #{phoneInfoPoint},</if>
+            <if test="isEmptyRecycled != null">is_empty_recycled = #{isEmptyRecycled},</if>
+            <if test="assetInfoNumber != null">asset_info_number = #{assetInfoNumber},</if>
+            <if test="commissioningDate != null">commissioning_date = #{commissioningDate},</if>
+            <if test="natIpAddress1 != null">nat_ip_address_1 = #{natIpAddress1},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="lifespan != null">lifespan = #{lifespan},</if>
+            <if test="macAddress != null">mac_address = #{macAddress},</if>
+            <if test="computerName != null">computer_name = #{computerName},</if>
+            <if test="gateway != null">gateway = #{gateway},</if>
+            <if test="networkDivision != null">network_division = #{networkDivision},</if>
+            <if test="ipArea != null">ip_area = #{ipArea},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProvinceFloorTerminalNetworkSegmentById" parameterType="Long">
+        delete from province_floor_terminal_network_segment where id = #{id}
+    </delete>
+
+    <delete id="deleteProvinceFloorTerminalNetworkSegmentByIds" parameterType="String">
+        delete from province_floor_terminal_network_segment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
