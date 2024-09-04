@@ -43,7 +43,7 @@ public class ProvinceFloorTerminalNetworkSegmentController extends BaseControlle
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<ProvinceFloorTerminalNetworkSegment> util = new ExcelUtil<ProvinceFloorTerminalNetworkSegment>(ProvinceFloorTerminalNetworkSegment.class);
+        ExcelUtil<ProvinceFloorTerminalNetworkSegment> util = new ExcelUtil<>(ProvinceFloorTerminalNetworkSegment.class);
         List<ProvinceFloorTerminalNetworkSegment> terminalList = util.importExcel(file.getInputStream());
         String operName = getUsername();
         String message = provinceFloorTerminalNetworkSegmentService.importProvinceFloorTerminalNetworkSegment(terminalList, updateSupport,operName);
@@ -56,7 +56,7 @@ public class ProvinceFloorTerminalNetworkSegmentController extends BaseControlle
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
-        ExcelUtil<ProvinceFloorTerminalNetworkSegment> util = new ExcelUtil<ProvinceFloorTerminalNetworkSegment>(ProvinceFloorTerminalNetworkSegment.class);
+        ExcelUtil<ProvinceFloorTerminalNetworkSegment> util = new ExcelUtil<>(ProvinceFloorTerminalNetworkSegment.class);
         util.importTemplateExcel(response, "终端IP地址");
     }
 
@@ -81,7 +81,7 @@ public class ProvinceFloorTerminalNetworkSegmentController extends BaseControlle
     public void export(HttpServletResponse response, ProvinceFloorTerminalNetworkSegment provinceFloorTerminalNetworkSegment)
     {
         List<ProvinceFloorTerminalNetworkSegment> list = provinceFloorTerminalNetworkSegmentService.selectProvinceFloorTerminalNetworkSegmentList(provinceFloorTerminalNetworkSegment);
-        ExcelUtil<ProvinceFloorTerminalNetworkSegment> util = new ExcelUtil<ProvinceFloorTerminalNetworkSegment>(ProvinceFloorTerminalNetworkSegment.class);
+        ExcelUtil<ProvinceFloorTerminalNetworkSegment> util = new ExcelUtil<>(ProvinceFloorTerminalNetworkSegment.class);
         util.exportExcel(response, list, "省行楼层终端网段设备管理数据");
     }
 

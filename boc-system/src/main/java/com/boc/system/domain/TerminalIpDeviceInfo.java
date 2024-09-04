@@ -93,35 +93,35 @@ public class TerminalIpDeviceInfo extends BaseEntity
     private  String oldDeviceReplacement;
 
     /** 局域网地址范围（掩码） */
-    @Excel(name = "局域网地址范围", readConverterExp = "掩=码")
+    @Excel(name = "局域网地址范围")
     private String localNetworkIpRange;
 
     /** Ethernet IP（默认掩码24） */
-    @Excel(name = "Ethernet IP", readConverterExp = "默=认掩码24")
+    @Excel(name = "Ethernet IP")
     private String ethernetIp;
 
     /** 网关（默认掩码24） */
-    @Excel(name = "网关", readConverterExp = "默=认掩码24")
+    @Excel(name = "网关")
     private String gatewayIp;
 
     /** PC地址段（21和22段） */
-    @Excel(name = "PC地址段", readConverterExp = "2=1和22段")
+    @Excel(name = "PC地址段")
     private String pcIpRange;
 
     /** ATM地址段（21网段） */
-    @Excel(name = "ATM地址段", readConverterExp = "2=1网段")
+    @Excel(name = "ATM地址段")
     private String atmIpRange;
 
     /** 监控地址段（22网段） */
-    @Excel(name = "监控地址段", readConverterExp = "2=2网段")
+    @Excel(name = "监控地址段")
     private String monitorIpRange;
 
     /** WLAN地址段（21网段） */
-    @Excel(name = "WLAN地址段", readConverterExp = "2=1网段")
+    @Excel(name = "WLAN地址段")
     private String wlanIpRange;
 
     /** 冠字号机具（21网段） */
-    @Excel(name = "冠字号机具", readConverterExp = "2=1网段")
+    @Excel(name = "冠字号机具")
     private String currencyMachineIpRange;
 
     /** 新loopback/32 */
@@ -165,21 +165,35 @@ public class TerminalIpDeviceInfo extends BaseEntity
     private String hostName;
 
     /** 创建人 */
-    @Excel(name = "创建人")
+//    @Excel(name = "创建人")
     private String createdBy;
 
     /** 最后更新人 */
-    @Excel(name = "最后更新人")
+//    @Excel(name = "最后更新人")
     private String updatedBy;
+
+    /** 备注 */
+    @Excel(name = "备注")
+    private String remark;
+
+    @Override
+    public String getRemark() {
+        return remark;
+    }
+
+    @Override
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+//    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createdAt;
 
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedAt;
 
     public void setId(Long id) 

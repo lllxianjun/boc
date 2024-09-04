@@ -43,7 +43,7 @@ public class TerminalIpDeviceInfoController extends BaseController
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<TerminalIpDeviceInfo> util = new ExcelUtil<TerminalIpDeviceInfo>(TerminalIpDeviceInfo.class);
+        ExcelUtil<TerminalIpDeviceInfo> util = new ExcelUtil<>(TerminalIpDeviceInfo.class);
         List<TerminalIpDeviceInfo> terminalIpDeviceInfoList = util.importExcel(file.getInputStream());
         String operName = getUsername();
         String message = terminalIpDeviceInfoService.importTerminalIpDeviceInfo(terminalIpDeviceInfoList, updateSupport, operName);
@@ -56,7 +56,7 @@ public class TerminalIpDeviceInfoController extends BaseController
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
-        ExcelUtil<TerminalIpDeviceInfo> util = new ExcelUtil<TerminalIpDeviceInfo>(TerminalIpDeviceInfo.class);
+        ExcelUtil<TerminalIpDeviceInfo> util = new ExcelUtil<>(TerminalIpDeviceInfo.class);
         util.importTemplateExcel(response, "全辖终端IP_准入设备信息数据");
     }
 
@@ -81,7 +81,7 @@ public class TerminalIpDeviceInfoController extends BaseController
     public void export(HttpServletResponse response, TerminalIpDeviceInfo terminalIpDeviceInfo)
     {
         List<TerminalIpDeviceInfo> list = terminalIpDeviceInfoService.selectTerminalIpDeviceInfoList(terminalIpDeviceInfo);
-        ExcelUtil<TerminalIpDeviceInfo> util = new ExcelUtil<TerminalIpDeviceInfo>(TerminalIpDeviceInfo.class);
+        ExcelUtil<TerminalIpDeviceInfo> util = new ExcelUtil<>(TerminalIpDeviceInfo.class);
         util.exportExcel(response, list, "全辖终端IP_准入设备信息数据");
     }
 

@@ -150,6 +150,22 @@ public class ProvinceFloorTerminalNetworkSegment extends BaseEntity
     @Excel(name = "设备类型",readConverterExp = "1=虚拟机,2=物理服务器,3=PC,4=打印机,5=智能柜台,6=安保设备,7=冠字号机具,8=多媒体终端,9=视频终端,10=BL核心终端,11=负载均衡器")
     private String deviceType;
 
+    /**
+     * 备注
+     */
+    @Excel(name = "备注")
+    private String remark;
+
+    @Override
+    public String getRemark() {
+        return remark;
+    }
+
+    @Override
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     /** 创建者 */
 //    @Excel(name = "创建者")
     private String createdBy;

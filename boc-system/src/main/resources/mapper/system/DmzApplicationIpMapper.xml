@@ -37,6 +37,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="openPort"    column="open_port"    />
         <result property="initiator"    column="initiator"    />
         <result property="ip"    column="ip"    />
+        <result property="ipArea"    column="ipArea"    />
+        <result property="deviceType"    column="deviceType"    />
         <result property="purpose"    column="purpose"    />
         <result property="externalAddressSegment"    column="external_address_segment"    />
         <result property="internalAddressSegment"    column="internal_address_segment"    />
@@ -53,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectDmzApplicationIpVo">
-        select id, external_address_mapping_vpn, external_address, application_type, application_date, external_access_address, wan, external_router_address_port, category, user, external_address_mapping_internal, internal_access_source_address, application_name, target_access_port, access_router_name, dedicated_line_name, internal_address_mapping_external, internal_address, external_access_source_address, port_usage_description, is_necessary_port, dmz_ip_address, internal_or_external_address, access_port, associated_access_address, port_usage, internal_application_server, external_proxy_counter, line_type_port_ip, open_port, initiator, ip, purpose, external_address_segment, internal_address_segment, application, access_source, router, internal_address_mapping_dmz, port, remark, created_by, created_time, updated_by, updated_time from dmz_application_ip
+        select id, external_address_mapping_vpn, external_address, application_type, application_date, external_access_address, wan, external_router_address_port, category, user, external_address_mapping_internal, internal_access_source_address, application_name, target_access_port, access_router_name, dedicated_line_name, internal_address_mapping_external, internal_address, external_access_source_address, port_usage_description, is_necessary_port, dmz_ip_address, internal_or_external_address, access_port, associated_access_address, port_usage, internal_application_server, external_proxy_counter, line_type_port_ip, open_port, initiator, ip, ipArea, deviceType, purpose, external_address_segment, internal_address_segment, application, access_source, router, internal_address_mapping_dmz, port, remark, created_by, created_time, updated_by, updated_time from dmz_application_ip
     </sql>
 
     <select id="selectDmzApplicationIpList" parameterType="DmzApplicationIp" resultMap="DmzApplicationIpResult">
@@ -90,6 +92,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="openPort != null  and openPort != ''"> and open_port like concat('%', #{openPort}, '%')</if>
             <if test="initiator != null  and initiator != ''"> and initiator like concat('%', #{initiator}, '%')</if>
             <if test="ip != null  and ip != ''"> and ip like concat('%', #{ip}, '%')</if>
+            <if test="ipArea != null  and ipArea != ''"> and ipArea like concat('%', #{ip}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''"> and deviceType like concat('%', #{ip}, '%')</if>
             <if test="purpose != null  and purpose != ''"> and purpose like concat('%', #{purpose}, '%')</if>
             <if test="externalAddressSegment != null  and externalAddressSegment != ''"> and external_address_segment like concat('%', #{externalAddressSegment}, '%')</if>
             <if test="internalAddressSegment != null  and internalAddressSegment != ''"> and internal_address_segment like concat('%', #{internalAddressSegment}, '%')</if>
@@ -144,6 +148,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="openPort != null">open_port,</if>
             <if test="initiator != null">initiator,</if>
             <if test="ip != null">ip,</if>
+            <if test="ipArea != null">ipArea,</if>
+            <if test="deviceType != null">deviceType,</if>
             <if test="purpose != null">purpose,</if>
             <if test="externalAddressSegment != null">external_address_segment,</if>
             <if test="internalAddressSegment != null">internal_address_segment,</if>
@@ -190,6 +196,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="openPort != null">#{openPort},</if>
             <if test="initiator != null">#{initiator},</if>
             <if test="ip != null">#{ip},</if>
+            <if test="ipArea != null">#{ipArea},</if>
+            <if test="deviceType != null">#{deviceType},</if>
             <if test="purpose != null">#{purpose},</if>
             <if test="externalAddressSegment != null">#{externalAddressSegment},</if>
             <if test="internalAddressSegment != null">#{internalAddressSegment},</if>
@@ -240,6 +248,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="openPort != null">open_port = #{openPort},</if>
             <if test="initiator != null">initiator = #{initiator},</if>
             <if test="ip != null">ip = #{ip},</if>
+            <if test="ipArea != null">ipArea = #{ipArea},</if>
+            <if test="deviceType != null">deviceType = #{deviceType},</if>
             <if test="purpose != null">purpose = #{purpose},</if>
             <if test="externalAddressSegment != null">external_address_segment = #{externalAddressSegment},</if>
             <if test="internalAddressSegment != null">internal_address_segment = #{internalAddressSegment},</if>

@@ -26,6 +26,8 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item> -->
+
+      <!-- 默认可见区域 -->
       <el-form-item label="IP地址" prop="ipAddress">
         <el-input v-model="queryParams.ipAddress" placeholder="请输入IP地址" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
@@ -37,6 +39,12 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <!-- 折叠搜索区域 -->
+      <el-collapse v-model="activeCollapse" v-show="showMoreFilters">
+        <el-collapse-item name="more">
+          <!-- 这里放折叠内容 -->
+        </el-collapse-item>
+      </el-collapse>
       <!-- <el-form-item label="路由器地址" prop="routerAddress">
         <el-input
           v-model="queryParams.routerAddress"
@@ -196,6 +204,10 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="text" @click="toggleMoreFilters">
+          {{ showMoreFilters ? '收起' : '展开' }}
+          <i :class="['el-icon-arrow-' + (showMoreFilters ? 'up' : 'down')]"></i>
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -547,6 +559,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
   </div>
 </template>
 
@@ -609,6 +622,10 @@ export default {
         ipArea: null,
         deviceType: null,
       },
+      //实现展开与收起
+      showMoreFilters: false,
+      //折叠菜单
+      activeCollapse: ['more'],
       // 设备导入参数
       upload: {
         // 是否显示弹出层（用户导入）
@@ -828,7 +845,7 @@ export default {
       const formattedDate = `${year}${month}${day}_${hours}${minutes}_${seconds}`;
 
       // 生成文件名
-      const fileName = `foreignexchange_${formattedDate}.xlsx`;
+      const fileName = `智能柜台及本外币兑换机IP地址_${formattedDate}.xlsx`;
 
       // 调用下载方法
       this.download('system/foreignexchange/export', {
@@ -858,6 +875,14 @@ export default {
     // 提交上传文件
     submitFileForm() {
       this.$refs.upload.submit();
+    },
+    toggleMoreFilters() {
+      this.showMoreFilters = !this.showMoreFilters
+      if (this.showMoreFilters) {
+        this.activeCollapse = ['more']
+      } else {
+        this.activeCollapse = []
+      }
     }
   }
 };
@@ -868,5 +893,21 @@ export default {
   text-align: right;
   padding: 10px 20px;
   border-top: 1px solid #e4e7ed;
+}
+.dialog-content{
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.el-collapse {
+  border: none;
+}
+
+.el-collapse-item>>>.el-collapse-item__header {
+  display: none;
+}
+
+.el-collapse-item>>>.el-collapse-item__wrap {
+  border-bottom: none;
 }
 </style>

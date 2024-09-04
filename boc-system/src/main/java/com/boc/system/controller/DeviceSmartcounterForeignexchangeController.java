@@ -43,7 +43,7 @@ public class DeviceSmartcounterForeignexchangeController extends BaseController
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<DeviceSmartcounterForeignexchange> util = new ExcelUtil<DeviceSmartcounterForeignexchange>(DeviceSmartcounterForeignexchange.class);
+        ExcelUtil<DeviceSmartcounterForeignexchange> util = new ExcelUtil<>(DeviceSmartcounterForeignexchange.class);
         List<DeviceSmartcounterForeignexchange> deviceSmartcounterForeignexchangeList = util.importExcel(file.getInputStream());
         String operName = getUsername();
         String message = deviceSmartcounterForeignexchangeService.importDeviceSmartcounterForeignexchange(deviceSmartcounterForeignexchangeList, updateSupport, operName);
@@ -53,7 +53,7 @@ public class DeviceSmartcounterForeignexchangeController extends BaseController
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
-        ExcelUtil<DeviceSmartcounterForeignexchange> util = new ExcelUtil<DeviceSmartcounterForeignexchange>(DeviceSmartcounterForeignexchange.class);
+        ExcelUtil<DeviceSmartcounterForeignexchange> util = new ExcelUtil<>(DeviceSmartcounterForeignexchange.class);
         util.importTemplateExcel(response, "智能柜台本外币IP表");
     }
 
@@ -78,7 +78,7 @@ public class DeviceSmartcounterForeignexchangeController extends BaseController
     public void export(HttpServletResponse response, DeviceSmartcounterForeignexchange deviceSmartcounterForeignexchange)
     {
         List<DeviceSmartcounterForeignexchange> list = deviceSmartcounterForeignexchangeService.selectDeviceSmartcounterForeignexchangeList(deviceSmartcounterForeignexchange);
-        ExcelUtil<DeviceSmartcounterForeignexchange> util = new ExcelUtil<DeviceSmartcounterForeignexchange>(DeviceSmartcounterForeignexchange.class);
+        ExcelUtil<DeviceSmartcounterForeignexchange> util = new ExcelUtil<>(DeviceSmartcounterForeignexchange.class);
         util.exportExcel(response, list, "智能柜台及本外币兑换机IP地址数据");
     }
 

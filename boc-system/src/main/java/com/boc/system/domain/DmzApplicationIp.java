@@ -195,7 +195,31 @@ public class DmzApplicationIp extends BaseEntity
     @Excel(name = "最后更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-    public void setId(Long id) 
+    /** IP所在区域 */
+    @Excel(name = "IP所在区域",readConverterExp = "1=生产DMZ区,2=测试DMZ区")
+    private String ipArea;
+
+    /** 设备类型 */
+    @Excel(name = "设备类型",readConverterExp = "1=物理服务器,2=虚拟机,3=负载均衡器")
+    private String deviceType;
+
+    public String getIpArea() {
+        return ipArea;
+    }
+
+    public void setIpArea(String ipArea) {
+        this.ipArea = ipArea;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

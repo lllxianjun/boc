@@ -217,25 +217,35 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item> -->
-      <el-form-item label="ip" prop="ip">
-        <el-input v-model="queryParams.ip" placeholder="请输入ip" clearable @keyup.enter.native="handleQuery" />
+      <!-- 默认可见区域 -->
+      <el-form-item label="IP地址" prop="ip">
+        <el-input v-model="queryParams.ip" placeholder="请输入IP地址" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="外部地址段" label-width="82px" prop="externalAddressSegment">
-        <el-input
-          v-model="queryParams.externalAddressSegment"
-          placeholder="请输入外部地址段"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.externalAddressSegment" placeholder="请输入外部地址段" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="内部地址段" label-width="82px" prop="internalAddressSegment">
-        <el-input
-          v-model="queryParams.internalAddressSegment"
-          placeholder="请输入内部地址段"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.internalAddressSegment" placeholder="请输入内部地址段" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
+      <!-- 折叠搜索区域 -->
+      <el-collapse v-model="activeCollapse" v-show="showMoreFilters">
+        <el-collapse-item name="more">
+          <el-form-item label="IP所在区域" prop="ipArea">
+            <el-select v-model="queryParams.ipArea" placeholder="请选择IP所在区域" clearable>
+              <el-option v-for="dict in dict.type.ip_dmz_areas" :key="dict.value" :label="dict.label"
+                :value="dict.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="设备类型" prop="deviceType">
+            <el-select v-model="queryParams.deviceType" placeholder="请选择设备类型" clearable>
+              <el-option v-for="dict in dict.type.dmz_device_type" :key="dict.value" :label="dict.label"
+                :value="dict.value" />
+            </el-select>
+          </el-form-item>
+        </el-collapse-item>
+      </el-collapse>
       <!-- <el-form-item label="用途" prop="purpose">
         <el-input
           v-model="queryParams.purpose"
@@ -319,6 +329,10 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="text" @click="toggleMoreFilters">
+          {{ showMoreFilters ? '收起' : '展开' }}
+          <i :class="['el-icon-arrow-' + (showMoreFilters ? 'up' : 'down')]"></i>
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -358,6 +372,16 @@
         v-if="columns[1].visible" />
       <el-table-column label="外联地址" show-overflow-tooltip align="center" prop="externalAddress"
         v-if="columns[2].visible" />
+        <el-table-column label="IP所在区域" align="center" prop="ipArea" v-if="columns[41].visible">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.ip_dmz_areas" :value="scope.row.ipArea" />
+          </template>
+        </el-table-column>
+        <el-table-column label="设备类型" show-overflow-tooltip align="center" prop="deviceType" v-if="columns[42].visible">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.dmz_device_type" :value="scope.row.deviceType" />
+          </template>
+        </el-table-column>
       <el-table-column label="应用类型" show-overflow-tooltip align="center" prop="applicationType"
         v-if="columns[3].visible" />
       <el-table-column label="应用日期" align="center" prop="applicationDate" v-if="columns[4].visible" width="180">
@@ -423,6 +447,7 @@
         v-if="columns[38].visible" />
       <el-table-column label="端口" show-overflow-tooltip align="center" prop="port" v-if="columns[39].visible" />
       <el-table-column label="备注" show-overflow-tooltip align="center" prop="remark" v-if="columns[40].visible" />
+      
       <!-- <el-table-column label="创建者" align="center" prop="createdBy" />
       <el-table-column label="创建时间" align="center" prop="createdTime" width="180">
         <template slot-scope="scope">
@@ -458,9 +483,9 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-          <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-          </div>
+          <!-- <div class="el-upload__tip" slot="tip">
+            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的DMZ区IP数据
+          </div> -->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
             @click="importTemplate">下载模板</el-link>
@@ -474,166 +499,43 @@
 
     <!-- 添加或修改DMZ区应用系统IP对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="dialog-content">
         <el-row :gutter="20">
-          <!-- 第一列 -->
-          <el-col :span="8">
-            <el-form-item label="外联地址映射成VPN地址" prop="externalAddressMappingVpn">
-              <el-input v-model="form.externalAddressMappingVpn" placeholder="请输入外联地址映射成VPN地址" />
-            </el-form-item>
-            <el-form-item label="外联地址" prop="externalAddress">
-              <el-input v-model="form.externalAddress" placeholder="请输入外联地址" />
-            </el-form-item>
-            <el-form-item label="应用日期" prop="applicationDate">
-              <el-date-picker clearable v-model="form.applicationDate" type="date" value-format="yyyy-MM-dd"
-                placeholder="请选择应用日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="外联访问地址" prop="externalAccessAddress">
-              <el-input v-model="form.externalAccessAddress" placeholder="请输入外联访问地址" />
-            </el-form-item>
-            <el-form-item label="WAN" prop="wan">
-              <el-input v-model="form.wan" placeholder="请输入WAN" />
-            </el-form-item>
-            <el-form-item label="外联路由器地址、端口" prop="externalRouterAddressPort">
-              <el-input v-model="form.externalRouterAddressPort" placeholder="请输入外联路由器地址、端口" />
-            </el-form-item>
-            <el-form-item label="所属分类" prop="category">
-              <el-input v-model="form.category" placeholder="请输入所属分类" />
-            </el-form-item>
-            <el-form-item label="使用人" prop="user">
-              <el-input v-model="form.user" placeholder="请输入使用人" />
-            </el-form-item>
-            <el-form-item label="外联地址映射成内部地址" prop="externalAddressMappingInternal">
-              <el-input v-model="form.externalAddressMappingInternal" placeholder="请输入外联地址映射成内部地址" />
-            </el-form-item>
-            <el-form-item label="我行内部访问源地址" prop="internalAccessSourceAddress">
-              <el-input v-model="form.internalAccessSourceAddress" placeholder="请输入我行内部访问源地址" />
-            </el-form-item>
-            <el-form-item label="访问目标的端口" prop="targetAccessPort">
-              <el-input v-model="form.targetAccessPort" placeholder="请输入访问目标的端口" />
-            </el-form-item>
-            <el-form-item label="路由器" prop="router">
-              <el-input v-model="form.router" placeholder="请输入路由器" />
-            </el-form-item>
-          </el-col>
-
-          <!-- 第二列 -->
-          <el-col :span="8">
-            <el-form-item label="接入路由器名称" prop="accessRouterName">
-              <el-input v-model="form.accessRouterName" placeholder="请输入接入路由器名称" />
-            </el-form-item>
-            <el-form-item label="专线名称" prop="dedicatedLineName">
-              <el-input v-model="form.dedicatedLineName" placeholder="请输入专线名称" />
-            </el-form-item>
-            <el-form-item label="内部地址映射成外部地址" prop="internalAddressMappingExternal">
-              <el-input v-model="form.internalAddressMappingExternal" placeholder="请输入内部地址映射成外部地址" />
-            </el-form-item>
-            <el-form-item label="内部地址" prop="internalAddress">
-              <el-input v-model="form.internalAddress" placeholder="请输入内部地址" />
-            </el-form-item>
-            <el-form-item label="外联访问源地址" prop="externalAccessSourceAddress">
-              <el-input v-model="form.externalAccessSourceAddress" placeholder="请输入外联访问源地址" />
-            </el-form-item>
-            <el-form-item label="端口用途描述" prop="portUsageDescription">
-              <el-input v-model="form.portUsageDescription" placeholder="请输入内容" />
-            </el-form-item>
-            <el-form-item label="是否为必要端口" prop="isNecessaryPort">
-              <el-input v-model="form.isNecessaryPort" placeholder="请输入是否为必要端口" />
-            </el-form-item>
-            <el-form-item label="dmz区IP地址" prop="dmzIpAddress">
-              <el-input v-model="form.dmzIpAddress" placeholder="请输入dmz区IP地址" />
-            </el-form-item>
-            <el-form-item label="内部或外部地址" prop="internalOrExternalAddress">
-              <el-input v-model="form.internalOrExternalAddress" placeholder="请输入内部或外部地址" />
-            </el-form-item>
-            <el-form-item label="访问端口" prop="accessPort">
-              <el-input v-model="form.accessPort" placeholder="请输入访问端口" />
-            </el-form-item>
-            <el-form-item label="应用类型" prop="applicationType">
-              <el-input v-model="form.applicationType" placeholder="请输入应用类型" />
-            </el-form-item>
-            <el-form-item label="访问源" prop="accessSource">
-              <el-input v-model="form.accessSource" placeholder="请输入访问源" />
-            </el-form-item>
-            <el-form-item label="端口" prop="port">
-              <el-input v-model="form.port" placeholder="请输入端口" />
-            </el-form-item>
-          </el-col>
-
-          <!-- 第三列 -->
-          <el-col :span="8">
-            <el-form-item label="关联访问地址" prop="associatedAccessAddress">
-              <el-input v-model="form.associatedAccessAddress" placeholder="请输入关联访问地址" />
-            </el-form-item>
-            <el-form-item label="端口用途" prop="portUsage">
-              <el-input v-model="form.portUsage" placeholder="请输入端口用途" />
-            </el-form-item>
-            <el-form-item label="内部应用服务器" prop="internalApplicationServer">
-              <el-input v-model="form.internalApplicationServer" placeholder="请输入内部应用服务器" />
-            </el-form-item>
-            <el-form-item label="外联代办柜台" prop="externalProxyCounter">
-              <el-input v-model="form.externalProxyCounter" placeholder="请输入外联代办柜台" />
-            </el-form-item>
-            <el-form-item label="线路类型、端口、ip" prop="lineTypePortIp">
-              <el-input v-model="form.lineTypePortIp" placeholder="请输入线路类型、端口、ip" />
-            </el-form-item>
-            <el-form-item label="开放端口" prop="openPort">
-              <el-input v-model="form.openPort" placeholder="请输入开放端口" />
-            </el-form-item>
-            <el-form-item label="发起方" prop="initiator">
-              <el-input v-model="form.initiator" placeholder="请输入发起方" />
-            </el-form-item>
-            <el-form-item label="ip" prop="ip">
-              <el-input v-model="form.ip" placeholder="请输入ip" />
-            </el-form-item>
-            <el-form-item label="用途" prop="purpose">
-              <el-input v-model="form.purpose" placeholder="请输入用途" />
-            </el-form-item>
-            <el-form-item label="外部地址段" prop="externalAddressSegment">
-              <el-input v-model="form.externalAddressSegment" placeholder="请输入外部地址段" />
-            </el-form-item>
-            <el-form-item label="应用名称" prop="applicationName">
-              <el-input v-model="form.applicationName" placeholder="请输入应用名称" />
-            </el-form-item>
-            <el-form-item label="应用" prop="application">
-              <el-input v-model="form.application" placeholder="请输入应用" />
-            </el-form-item>
-            <el-form-item label="内部地址映射成dmz地址" prop="internalAddressMappingDmz">
-              <el-input v-model="form.internalAddressMappingDmz" placeholder="内部地址映射成dmz地址" />
-            </el-form-item>
-            <el-form-item label="内部地址段" prop="internalAddressSegment">
-              <el-input v-model="form.internalAddressSegment" placeholder="请输入内部地址段" />
-            </el-form-item>
+          <el-col :span="8" v-for="(column, colIndex) in displayColumns" :key="colIndex">
+            <template v-for="field in column">
+              <el-form-item :label="field.label" :prop="field.prop">
+                <!-- 使用v-if来判断显示 -->
+                <template v-if="field.prop === 'applicationDate'">
+                  <el-date-picker 
+                    clearable 
+                    v-model="form.applicationDate" 
+                    type="date" 
+                    value-format="yyyy-MM-dd"
+                    placeholder="请选择应用日期">
+                  </el-date-picker>
+                </template>
+                <template v-else-if="field.prop === 'deviceType'">
+                  <el-select v-model="form.deviceType" placeholder="请选择设备类型">
+                    <el-option v-for="dict in dict.type.dmz_device_type" :key="dict.value" :label="dict.label"
+                      :value="dict.value"></el-option>
+                  </el-select>
+                </template>
+                  <template v-else-if="field.prop === 'ipArea'">
+                    <el-select v-model="form.ipArea" placeholder="请选择IP所在区域">
+                      <el-option v-for="dict in dict.type.ip_dmz_areas" :key="dict.value" :label="dict.label"
+                        :value="dict.value"></el-option>
+                    </el-select>
+                  </template>
+                <template v-else>
+                  <el-input v-model="form[field.prop]" :placeholder="'请输入' + field.label" />
+                </template>
+              </el-form-item>
+            </template>
           </el-col>
         </el-row>
-
-        <!-- 单独放置备注 -->
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <!-- <el-form-item label="创建者" prop="createdBy">
-          <el-input v-model="form.createdBy" placeholder="请输入创建者" />
-        </el-form-item>
-        <el-form-item label="创建时间" prop="createdTime">
-          <el-date-picker clearable
-            v-model="form.createdTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择创建时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="最后更新者" prop="updatedBy">
-          <el-input v-model="form.updatedBy" placeholder="请输入最后更新者" />
-        </el-form-item>
-        <el-form-item label="最后更新时间" prop="updatedTime">
-          <el-date-picker clearable
-            v-model="form.updatedTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择最后更新时间">
-          </el-date-picker>
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -645,163 +547,20 @@
     <el-dialog title="DMZ区应用系统IP详情" :visible.sync="getDmzapplicationipInfoOpen" width="1000px" append-to-body>
       <el-form :model="form" label-width="120px" class="dialog-content">
         <el-row :gutter="20">
-          <!-- 第一列 -->
-          <el-col :span="8">
-            <el-form-item label="外联地址映射成VPN地址" v-show="form.externalAddressMappingVpn">
-              <el-input v-model="form.externalAddressMappingVpn" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="外联地址" v-show="form.externalAddress">
-              <el-input v-model="form.externalAddress" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="应用日期" v-show="form.applicationDate">
-              <el-date-picker v-model="form.applicationDate" type="date" value-format="yyyy-MM-dd" :disabled="true"
-                clearable placeholder="请选择应用日期"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="外联访问地址" v-show="form.externalAccessAddress">
-              <el-input v-model="form.externalAccessAddress" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="WAN" v-show="form.wan">
-              <el-input v-model="form.wan" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="外联路由器地址、端口" v-show="form.externalRouterAddressPort">
-              <el-input v-model="form.externalRouterAddressPort" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="所属分类" v-show="form.category">
-              <el-input v-model="form.category" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="使用人" v-show="form.user">
-              <el-input v-model="form.user" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="外联地址映射成内部地址" v-show="form.externalAddressMappingInternal">
-              <el-input v-model="form.externalAddressMappingInternal" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="我行内部访问源地址" v-show="form.internalAccessSourceAddress">
-              <el-input v-model="form.internalAccessSourceAddress" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="访问源" v-show="form.accessSource">
-              <el-input v-model="form.accessSource" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="访问端口" v-show="form.accessPort">
-              <el-input v-model="form.accessPort" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-
-          <!-- 第二列 -->
-          <el-col :span="8">
-            <el-form-item label="接入路由器名称" v-show="form.accessRouterName">
-              <el-input v-model="form.accessRouterName" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="专线名称" v-show="form.dedicatedLineName">
-              <el-input v-model="form.dedicatedLineName" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="内部地址映射成外部地址" v-show="form.internalAddressMappingExternal">
-              <el-input v-model="form.internalAddressMappingExternal" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="内部地址" v-show="form.internalAddress">
-              <el-input v-model="form.internalAddress" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="外联访问源地址" v-show="form.externalAccessSourceAddress">
-              <el-input v-model="form.externalAccessSourceAddress" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="端口用途描述" v-show="form.portUsageDescription">
-              <el-input v-model="form.portUsageDescription" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="是否为必要端口" v-show="form.isNecessaryPort">
-              <el-input v-model="form.isNecessaryPort" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="dmz区IP地址" v-show="form.dmzIpAddress">
-              <el-input v-model="form.dmzIpAddress" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="内部或外部地址" v-show="form.internalOrExternalAddress">
-              <el-input v-model="form.internalOrExternalAddress" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="访问端口" v-show="form.accessPort">
-              <el-input v-model="form.accessPort" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="访问目标的端口" v-show="form.targetAccessPort">
-              <el-input v-model="form.targetAccessPort" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="端口" v-show="form.port">
-              <el-input v-model="form.port" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="路由器" v-show="form.router">
-              <el-input v-model="form.router" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="应用类型" v-show="form.applicationType">
-              <el-input v-model="form.applicationType" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-
-          <!-- 第三列 -->
-          <el-col :span="8">
-            <el-form-item label="关联访问地址" v-show="form.associatedAccessAddress">
-              <el-input v-model="form.associatedAccessAddress" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="端口用途" v-show="form.portUsage">
-              <el-input v-model="form.portUsage" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="内部应用服务器" v-show="form.internalApplicationServer">
-              <el-input v-model="form.internalApplicationServer" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="外联代办柜台" v-show="form.externalProxyCounter">
-              <el-input v-model="form.externalProxyCounter" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="线路类型、端口、ip" v-show="form.lineTypePortIp">
-              <el-input v-model="form.lineTypePortIp" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="开放端口" v-show="form.openPort">
-              <el-input v-model="form.openPort" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="发起方" v-show="form.initiator">
-              <el-input v-model="form.initiator" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="ip" v-show="form.ip">
-              <el-input v-model="form.ip" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="用途" v-show="form.purpose">
-              <el-input v-model="form.purpose" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="应用名称" v-show="form.applicationName">
-              <el-input v-model="form.applicationName" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="外部地址段" v-show="form.externalAddressSegment">
-              <el-input v-model="form.externalAddressSegment" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="内部地址段" v-show="form.internalAddressSegmen">
-              <el-input v-model="form.internalAddressSegmen" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="应用" v-show="form.application">
-              <el-input v-model="form.application" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="内部地址映射成dmz地址" v-show="form.internalAddressMappingDmz">
-              <el-input v-model="form.internalAddressMappingDmz" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="内部地址段" v-show="form.internalAddressSegment">
-              <el-input v-model="form.internalAddressSegment" :disabled="true"></el-input>
-            </el-form-item>
+          <el-col :span="8" v-for="(column, colIndex) in displayColumns" :key="colIndex">
+            <template v-for="field in column">
+              <el-form-item :label="field.label" :key="field.key" v-if="form[field.prop]">
+                <el-input v-model="form[field.prop]" :disabled="true" />
+              </el-form-item>
+            </template>
           </el-col>
         </el-row>
-
-        <!-- 单独放置备注 -->
-        <el-form-item label="备注" v-show="form.remark">
-          <el-input v-model="form.remark" type="textarea" :disabled="true" placeholder="请输入内容" />
+        <el-form-item label="备注" v-if="form.remark">
+          <el-input v-model="form.remark" :disabled="true" type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4 }"></el-input>
         </el-form-item>
-
-        <!-- <el-form-item label="创建者" v-show="form.createdBy">
-      <el-input v-model="form.createdBy" :disabled="true"></el-input>
-    </el-form-item>
-    <el-form-item label="创建时间" v-show="form.createdTime">
-      <el-date-picker v-model="form.createdTime" type="date" value-format="yyyy-MM-dd" :disabled="true" clearable placeholder="请选择创建时间"></el-date-picker>
-    </el-form-item>
-    <el-form-item label="最后更新者" v-show="form.updatedBy">
-      <el-input v-model="form.updatedBy" :disabled="true"></el-input>
-    </el-form-item>
-    <el-form-item label="最后更新时间" v-show="form.updatedTime">
-      <el-date-picker v-model="form.updatedTime" type="date" value-format="yyyy-MM-dd" :disabled="true" clearable placeholder="请选择最后更新时间"></el-date-picker>
-    </el-form-item> -->
       </el-form>
     </el-dialog>
-
 
   </div>
 </template>
@@ -811,6 +570,7 @@ import { listDmzapplicationip, getDmzapplicationip, delDmzapplicationip, addDmza
 import { getToken } from "@/utils/auth";
 export default {
   name: "Dmzapplicationip",
+  dicts: ['ip_dmz_areas', 'dmz_device_type'],
   data() {
     return {
       // 表格高度
@@ -883,6 +643,10 @@ export default {
         updatedBy: null,
         updatedTime: null
       },
+      //实现展开与收起
+      showMoreFilters: false,
+      //折叠菜单
+      activeCollapse: ['more'],
       // ATM地址导入参数
       upload: {
         // 是否显示弹出层（用户导入）
@@ -902,49 +666,51 @@ export default {
       form: {},
       // 列信息
       columns: [
-        { key: 0, label: `序号`, visible: true },
-        { key: 1, label: `外联地址映射成VPN`, visible: true },
-        { key: 2, label: `外联地址`, visible: true },
-        { key: 3, label: `应用类型`, visible: true },
-        { key: 4, label: `应用日期`, visible: true },
-        { key: 5, label: `外联访问地址`, visible: true },
-        { key: 6, label: `WAN`, visible: true },
-        { key: 7, label: `外联路由器地址、端口`, visible: true },
-        { key: 8, label: `所属分类`, visible: true },
-        { key: 9, label: `使用人`, visible: true },
-        { key: 10, label: `外联地址映射成内部地址`, visible: true },
-        { key: 11, label: `我行内部访问源地址`, visible: true },
-        { key: 12, label: `应用名称`, visible: true },
-        { key: 13, label: `访问目标的端口`, visible: true },
-        { key: 14, label: `接入路由器的名称`, visible: true },
-        { key: 15, label: `专线名称`, visible: true },
-        { key: 16, label: `内部地址映射成外部地址`, visible: true },
-        { key: 17, label: `内部地址`, visible: true },
-        { key: 18, label: `外联访问源地址`, visible: true },
-        { key: 19, label: `端口用途描述`, visible: true },
-        { key: 20, label: `是否为必要端口`, visible: true },
-        { key: 21, label: `dmz区IP地址`, visible: true },
-        { key: 22, label: `内部或外部地址`, visible: true },
-        { key: 23, label: `访问端口`, visible: true },
-        { key: 24, label: `关联访问地址`, visible: true },
-        { key: 25, label: `端口用途`, visible: true },
-        { key: 26, label: `内部应用服务器`, visible: true },
-        { key: 27, label: `外联代办柜台`, visible: true },
-        { key: 28, label: `线路类型`, visible: true },
-        { key: 29, label: `开放端口`, visible: true },
-        { key: 30, label: `发起方`, visible: true },
-        { key: 31, label: `ip`, visible: true },
-        { key: 32, label: `用途`, visible: true },
-        { key: 33, label: `外部地址段`, visible: true },
-        { key: 34, label: `内部地址段`, visible: true },
-        { key: 35, label: `应用`, visible: true },
-        { key: 36, label: `访问源`, visible: true },
-        { key: 37, label: `路由器`, visible: true },
-        { key: 38, label: `内部地址映射成dmz地址`, visible: true },
-        { key: 39, label: `端口`, visible: true },
-        { key: 40, label: `备注`, visible: true }
+  { key: 0, label: '序号', prop: 'id', visible: true },
+  { key: 1, label: '外联地址映射成VPN', prop: 'externalAddressMappingVpn', visible: true },
+  { key: 2, label: '外联地址', prop: 'externalAddress', visible: true },
+  { key: 3, label: '应用类型', prop: 'applicationType', visible: true },
+  { key: 4, label: '应用日期', prop: 'applicationDate', visible: true },
+  { key: 5, label: '外联访问地址', prop: 'externalAccessAddress', visible: true },
+  { key: 6, label: 'WAN', prop: 'wan', visible: true },
+  { key: 7, label: '外联路由器地址、端口', prop: 'externalRouterAddressPort', visible: true },
+  { key: 8, label: '所属分类', prop: 'category', visible: true },
+  { key: 9, label: '使用人', prop: 'user', visible: true },
+  { key: 10, label: '外联地址映射成内部地址', prop: 'externalAddressMappingInternal', visible: true },
+  { key: 11, label: '我行内部访问源地址', prop: 'internalAccessSourceAddress', visible: true },
+  { key: 12, label: '应用名称', prop: 'applicationName', visible: true },
+  { key: 13, label: '访问目标的端口', prop: 'targetAccessPort', visible: true },
+  { key: 14, label: '接入路由器的名称', prop: 'accessRouterName', visible: true },
+  { key: 15, label: '专线名称', prop: 'dedicatedLineName', visible: true },
+  { key: 16, label: '内部地址映射成外部地址', prop: 'internalAddressMappingExternal', visible: true },
+  { key: 17, label: '内部地址', prop: 'internalAddress', visible: true },
+  { key: 18, label: '外联访问源地址', prop: 'externalAccessSourceAddress', visible: true },
+  { key: 19, label: '端口用途描述', prop: 'portUsageDescription', visible: true },
+  { key: 20, label: '是否为必要端口', prop: 'isNecessaryPort', visible: true },
+  { key: 21, label: 'dmz区IP地址', prop: 'dmzIpAddress', visible: true },
+  { key: 22, label: '内部或外部地址', prop: 'internalOrExternalAddress', visible: true },
+  { key: 23, label: '访问端口', prop: 'accessPort', visible: true },
+  { key: 24, label: '关联访问地址', prop: 'associatedAccessAddress', visible: true },
+  { key: 25, label: '端口用途', prop: 'portUsage', visible: true },
+  { key: 26, label: '内部应用服务器', prop: 'internalApplicationServer', visible: true },
+  { key: 27, label: '外联代办柜台', prop: 'externalProxyCounter', visible: true },
+  { key: 28, label: '线路类型', prop: 'lineType', visible: true },
+  { key: 29, label: '开放端口', prop: 'openPort', visible: true },
+  { key: 30, label: '发起方', prop: 'initiator', visible: true },
+  { key: 31, label: 'ip', prop: 'ip', visible: true },
+  { key: 32, label: '用途', prop: 'purpose', visible: true },
+  { key: 33, label: '外部地址段', prop: 'externalAddressSegment', visible: true },
+  { key: 34, label: '内部地址段', prop: 'internalAddressSegment', visible: true },
+  { key: 35, label: '应用', prop: 'application', visible: true },
+  { key: 36, label: '访问源', prop: 'accessSource', visible: true },
+  { key: 37, label: '路由器', prop: 'router', visible: true },
+  { key: 38, label: '内部地址映射成dmz地址', prop: 'internalAddressMappingDmz', visible: true },
+  { key: 39, label: '端口', prop: 'port', visible: true },
+  { key: 40, label: '备注', prop: 'remark', visible: true },
+  { key: 41, label: 'IP所在区域', prop: 'ipArea', visible: true },
+  { key: 42, label: '设备类型', prop: 'deviceType', visible: true }
+],
 
-      ],
       // 表单校验
       rules: {
       }
@@ -952,6 +718,20 @@ export default {
   },
   created() {
     this.getList();
+  },
+  computed: {
+    displayColumns() {
+      const visibleColumns = this.columns.filter(col => col.visible && col.key !== 0 && col.prop !== "remark");
+      const total = visibleColumns.length;
+      const columns = [[], [], []];
+
+      // 计算每列应该放置的元素数量
+      for (let i = 0; i < total; i++) {
+        columns[i % 3].push(visibleColumns[i]);
+      }
+
+      return columns;
+    }
   },
   methods: {
     /** 查询DMZ区应用系统IP列表 */
@@ -977,6 +757,7 @@ export default {
         this.getDmzapplicationipInfoOpen = true;
       });
     },
+
     /** 导入按钮操作 */
     handleImport() {
       this.upload.title = "DMZ区IP导入";
@@ -997,7 +778,7 @@ export default {
       this.download(
         "system/dmzapplicationip/importTemplate",
         {},
-        `dmzapplicationip_template_${new Date().getTime()}.xlsx`
+        `DMZ区IP模板${new Date().getTime()}.xlsx`
       );
     },
     // 文件上传中处理
@@ -1161,12 +942,20 @@ export default {
       const formattedDate = `${year}${month}${day}_${hours}${minutes}_${seconds}`;
 
       // 生成文件名
-      const fileName = `dmzapplicationip_${formattedDate}.xlsx`;
+      const fileName = `DMZ区应用系统IP_${formattedDate}.xlsx`;
 
       // 调用下载方法
       this.download('system/dmzapplicationip/export', {
         ...this.queryParams
       }, fileName);
+    },
+    toggleMoreFilters() {
+      this.showMoreFilters = !this.showMoreFilters
+      if (this.showMoreFilters) {
+        this.activeCollapse = ['more']
+      } else {
+        this.activeCollapse = []
+      }
     }
   }
 };
@@ -1177,5 +966,22 @@ export default {
   text-align: right;
   padding: 10px 20px;
   border-top: 1px solid #e4e7ed;
+}
+
+.dialog-content{
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.el-collapse {
+  border: none;
+}
+
+.el-collapse-item>>>.el-collapse-item__header {
+  display: none;
+}
+
+.el-collapse-item>>>.el-collapse-item__wrap {
+  border-bottom: none;
 }
 </style>

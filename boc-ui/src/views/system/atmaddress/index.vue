@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <!-- 这里放默认搜索内容 -->
       <el-form-item label="MSTP VLAN" label-width="93px" prop="mstpVlan">
         <el-input
           v-model="queryParams.mstpVlan"
@@ -17,6 +18,12 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <!-- 折叠搜索区域 -->
+      <el-collapse v-model="activeCollapse" v-show="showMoreFilters">
+        <el-collapse-item name="more">
+          <!-- 这里放折叠内容 -->
+        </el-collapse-item>
+      </el-collapse>
       <!-- <el-form-item label="ATM位置" prop="atmLocation">
         <el-input
           v-model="queryParams.atmLocation"
@@ -208,6 +215,10 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="text" @click="toggleMoreFilters">
+          {{ showMoreFilters ? '收起' : '展开' }}
+          <i :class="['el-icon-arrow-' + (showMoreFilters ? 'up' : 'down')]"></i>
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -319,9 +330,9 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-          <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-          </div>
+          <!-- <div class="el-upload__tip" slot="tip">
+            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的离行ATM及外联单位地址数据
+          </div> -->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
             @click="importTemplate">下载模板</el-link>
@@ -592,6 +603,10 @@ export default {
         updatedBy: null,
         updatedTime: null
       },
+      //实现展开与收起
+      showMoreFilters: false,
+      //折叠菜单
+      activeCollapse: ['more'],
       // ATM地址导入参数
       upload: {
         // 是否显示弹出层（用户导入）
@@ -688,7 +703,7 @@ export default {
       this.download(
         "system/atmaddress/importTemplate",
         {},
-        `atmaddress_template_${new Date().getTime()}.xlsx`
+        `离行ATM及外联单位地址模板${new Date().getTime()}.xlsx`
       );
     },
     // 文件上传中处理
@@ -837,12 +852,20 @@ export default {
       const formattedDate = `${year}${month}${day}_${hours}${minutes}_${seconds}`;
 
       // 生成文件名
-      const fileName = `atmaddress_${formattedDate}.xlsx`;
+      const fileName = `离行ATM及外联单位地址_${formattedDate}.xlsx`;
 
       // 调用下载方法
       this.download('system/atmaddress/export', {
         ...this.queryParams
       }, fileName);
+    },
+    toggleMoreFilters() {
+      this.showMoreFilters = !this.showMoreFilters
+      if (this.showMoreFilters) {
+        this.activeCollapse = ['more']
+      } else {
+        this.activeCollapse = []
+      }
     }
   }
 };
@@ -853,5 +876,21 @@ export default {
   text-align: right;
   padding: 10px 20px;
   border-top: 1px solid #e4e7ed;
+}
+.dialog-content{
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.el-collapse {
+  border: none;
+}
+
+.el-collapse-item>>>.el-collapse-item__header {
+  display: none;
+}
+
+.el-collapse-item>>>.el-collapse-item__wrap {
+  border-bottom: none;
 }
 </style>

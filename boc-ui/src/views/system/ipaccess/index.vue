@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <!-- 这里放默认搜索内容 -->
       <el-form-item label="源IP" prop="sourceIp">
         <el-input v-model="queryParams.sourceIp" placeholder="请输入源IP" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
@@ -20,6 +21,13 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+
+      <!-- 折叠搜索区域 -->
+      <el-collapse v-model="activeCollapse" v-show="showMoreFilters">
+        <el-collapse-item name="more">
+          <!-- 这里放折叠内容 -->
+        </el-collapse-item>
+      </el-collapse>
       <!-- 
       <el-form-item label="用户姓名" prop="userName">
         <el-input
@@ -312,6 +320,10 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="text" @click="toggleMoreFilters">
+          {{ showMoreFilters ? '收起' : '展开' }}
+          <i :class="['el-icon-arrow-' + (showMoreFilters ? 'up' : 'down')]"></i>
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -411,282 +423,37 @@
       @pagination="getList" />
 
     <!-- 查看全辖终端IP_准入设备信息详情 -->
-    <el-dialog title="全辖终端IP_准入设备信息详情" :visible.sync="getIpaccessInfoOpen" width="1200px" append-to-body>
+    <el-dialog title="DMZ区应用系统IP详情" :visible.sync="getIpaccessInfoOpen" width="1000px" append-to-body>
       <el-form :model="form" label-width="120px" class="dialog-content">
         <el-row :gutter="20">
-          <!-- 第一列 -->
-          <el-col :span="8">
-            <el-form-item label="源IP" v-show="form.sourceIp">
-              <el-input v-model="form.sourceIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="MAC地址" v-show="form.macAddress">
-              <el-input v-model="form.macAddress" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="部门名称" v-show="form.departmentName">
-              <el-input v-model="form.departmentName" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="用户姓名" v-show="form.userName">
-              <el-input v-model="form.userName" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="网络设备" v-show="form.networkDevice">
-              <el-input v-model="form.networkDevice" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="网络设备IP" v-show="form.networkDeviceIp">
-              <el-input v-model="form.networkDeviceIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="端口" v-show="form.port">
-              <el-input v-model="form.port" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="操作系统" v-show="form.operatingSystem">
-              <el-input v-model="form.operatingSystem" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="冠字号机具" v-show="form.currencyMachineIpRange">
-              <el-input v-model="form.currencyMachineIpRange" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="新loopback/32" v-show="form.loopbackIp">
-              <el-input v-model="form.loopbackIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="同城电信/30" v-show="form.telecomCircuitIp">
-              <el-input v-model="form.telecomCircuitIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="移动mstp vlan" v-show="form.mobileMstpVlan">
-              <el-input v-model="form.mobileMstpVlan" :disabled="true" />
-            </el-form-item>
-          </el-col>
-          <!-- 第二列 -->
-          <el-col :span="8">
-            <el-form-item label="电子邮箱" v-show="form.email">
-              <el-input v-model="form.email" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="电话号码" v-show="form.phoneNumber">
-              <el-input v-model="form.phoneNumber" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="管辖行" v-show="form.branchName">
-              <el-input v-model="form.branchName" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="行名" v-show="form.subBranchName">
-              <el-input v-model="form.subBranchName" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="设备" v-show="form.device">
-              <el-input v-model="form.device" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="设备名称" v-show="form.deviceName">
-              <el-input v-model="form.deviceName" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="固定资产编号" v-show="form.assetNumber">
-              <el-input v-model="form.assetNumber" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="设备年限" v-show="form.deviceAge">
-              <el-input v-model="form.deviceAge" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="同城有线电视/30" v-show="form.cableTvCircuitIp">
-              <el-input v-model="form.cableTvCircuitIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="电信mstp vlan" v-show="form.telecomMstpVlan">
-              <el-input v-model="form.telecomMstpVlan" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="同城移动/30" v-show="form.mobileCircuitIp">
-              <el-input v-model="form.mobileCircuitIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="联通mstp vlan" v-show="form.unicomMstpVlan">
-              <el-input v-model="form.unicomMstpVlan" :disabled="true" />
-            </el-form-item>
-          </el-col>
-          <!-- 第三列 -->
-          <el-col :span="8">
-            <el-form-item label="老旧设备更换" v-show="form.oldDeviceReplacement">
-              <el-input v-model="form.oldDeviceReplacement" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="局域网地址范围" v-show="form.localNetworkIpRange">
-              <el-input v-model="form.localNetworkIpRange" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="Ethernet IP" v-show="form.ethernetIp">
-              <el-input v-model="form.ethernetIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="网关" v-show="form.gatewayIp">
-              <el-input v-model="form.gatewayIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="PC地址段" v-show="form.pcIpRange">
-              <el-input v-model="form.pcIpRange" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="ATM地址段" v-show="form.atmIpRange">
-              <el-input v-model="form.atmIpRange" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="监控地址段" v-show="form.monitorIpRange">
-              <el-input v-model="form.monitorIpRange" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="WLAN地址段" v-show="form.wlanIpRange">
-              <el-input v-model="form.wlanIpRange" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="主机名" v-show="form.hostName">
-              <el-input v-model="form.hostName" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="同城联通/30" v-show="form.unicomCircuitIp">
-              <el-input v-model="form.unicomCircuitIp" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="有线电视mstp vlan" v-show="form.cableTvMstpVlan">
-              <el-input v-model="form.cableTvMstpVlan" :disabled="true" />
-            </el-form-item>
-            <el-form-item label="设备型号" v-show="form.deviceType">
-              <el-input v-model="form.deviceType" :disabled="true" />
-            </el-form-item>
+          <el-col :span="8" v-for="(column, colIndex) in displayColumns" :key="colIndex">
+            <template v-for="field in column">
+              <el-form-item :label="field.label" :key="field.key" v-if="form[field.prop]">
+                <el-input v-model="form[field.prop]" :disabled="true" />
+              </el-form-item>
+            </template>
           </el-col>
         </el-row>
-        <el-form-item label="备注" v-show="form.remark">
+        <el-form-item label="备注" v-if="form.remark">
           <el-input v-model="form.remark" :disabled="true" type="textarea"
             :autosize="{ minRows: 2, maxRows: 4 }"></el-input>
         </el-form-item>
       </el-form>
     </el-dialog>
+    
 
     <!-- 添加或修改全辖终端IP_准入设备信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="dialog-content">
         <el-row :gutter="20">
-          <!-- 第一列 -->
-          <el-col :span="8">
-            <el-form-item label="源IP" prop="sourceIp">
-              <el-input v-model="form.sourceIp" placeholder="请输入源IP" />
-            </el-form-item>
-            <el-form-item label="MAC地址" prop="macAddress">
-              <el-input v-model="form.macAddress" placeholder="请输入MAC地址" />
-            </el-form-item>
-            <el-form-item label="部门名称" prop="departmentName">
-              <el-input v-model="form.departmentName" placeholder="请输入部门名称" />
-            </el-form-item>
-            <el-form-item label="用户姓名" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户姓名" />
-            </el-form-item>
-            <el-form-item label="网络设备" prop="networkDevice">
-              <el-input v-model="form.networkDevice" placeholder="请输入网络设备" />
-            </el-form-item>
-            <el-form-item label="网络设备IP" prop="networkDeviceIp">
-              <el-input v-model="form.networkDeviceIp" placeholder="请输入网络设备IP" />
-            </el-form-item>
-            <el-form-item label="端口" prop="port">
-              <el-input v-model="form.port" placeholder="请输入端口" />
-            </el-form-item>
-            <el-form-item label="操作系统" prop="operatingSystem">
-              <el-input v-model="form.operatingSystem" placeholder="请输入操作系统" />
-            </el-form-item>
-            <el-form-item label="冠字号机具" prop="currencyMachineIpRange">
-              <el-input v-model="form.currencyMachineIpRange" placeholder="请输入冠字号机具" />
-            </el-form-item>
-            <el-form-item label="新loopback/32" prop="loopbackIp">
-              <el-input v-model="form.loopbackIp" placeholder="请输入新loopback/32" />
-            </el-form-item>
-            <el-form-item label="同城电信/30" prop="telecomCircuitIp">
-              <el-input v-model="form.telecomCircuitIp" placeholder="请输入同城电信/30" />
-            </el-form-item>
-            <el-form-item label="移动mstp vlan" prop="mobileMstpVlan">
-              <el-input v-model="form.mobileMstpVlan" placeholder="请输入移动mstp vlan" />
-            </el-form-item>
-            <el-form-item label="有线电视mstp vlan" prop="cableTvMstpVlan">
-              <el-input v-model="form.cableTvMstpVlan" placeholder="请输入有线电视mstp vlan" />
-            </el-form-item>
-          </el-col>
-          <!-- 第二列 -->
-          <el-col :span="8">
-            <el-form-item label="电子邮箱" prop="email">
-              <el-input v-model="form.email" placeholder="请输入电子邮箱" />
-            </el-form-item>
-            <el-form-item label="电话号码" prop="phoneNumber">
-              <el-input v-model="form.phoneNumber" placeholder="请输入电话号码" />
-            </el-form-item>
-            <el-form-item label="管辖行" prop="branchName">
-              <el-input v-model="form.branchName" placeholder="请输入管辖行" />
-            </el-form-item>
-            <el-form-item label="行名" prop="subBranchName">
-              <el-input v-model="form.subBranchName" placeholder="请输入行名" />
-            </el-form-item>
-            <el-form-item label="设备" prop="device">
-              <el-input v-model="form.device" placeholder="请输入设备" />
-            </el-form-item>
-            <el-form-item label="设备名称" prop="deviceName">
-              <el-input v-model="form.deviceName" placeholder="请输入设备名称" />
-            </el-form-item>
-            <el-form-item label="固定资产编号" prop="assetNumber">
-              <el-input v-model="form.assetNumber" placeholder="请输入固定资产编号" />
-            </el-form-item>
-            <el-form-item label="设备年限" prop="deviceAge">
-              <el-input v-model="form.deviceAge" placeholder="请输入设备年限" />
-            </el-form-item>
-            <el-form-item label="同城有线电视/30" prop="cableTvCircuitIp">
-              <el-input v-model="form.cableTvCircuitIp" placeholder="请输入同城有线电视/30" />
-            </el-form-item>
-            <el-form-item label="电信mstp vlan" prop="telecomMstpVlan">
-              <el-input v-model="form.telecomMstpVlan" placeholder="请输入电信mstp vlan" />
-            </el-form-item>
-            <el-form-item label="同城移动/30" prop="mobileCircuitIp">
-              <el-input v-model="form.mobileCircuitIp" placeholder="请输入同城移动/30" />
-            </el-form-item>
-            <el-form-item label="联通mstp vlan" prop="unicomMstpVlan">
-              <el-input v-model="form.unicomMstpVlan" placeholder="请输入联通mstp vlan" />
-            </el-form-item>
-          </el-col>
-          <!-- 第三列 -->
-          <el-col :span="8">
-            <el-form-item label="老旧设备更换" prop="oldDeviceReplacement">
-              <el-input v-model="form.oldDeviceReplacement" placeholder="请输入老旧设备更换" />
-            </el-form-item>
-            <el-form-item label="局域网地址范围" prop="localNetworkIpRange">
-              <el-input v-model="form.localNetworkIpRange" placeholder="请输入局域网地址范围" />
-            </el-form-item>
-            <el-form-item label="Ethernet IP" prop="ethernetIp">
-              <el-input v-model="form.ethernetIp" placeholder="请输入Ethernet IP" />
-            </el-form-item>
-            <el-form-item label="网关" prop="gatewayIp">
-              <el-input v-model="form.gatewayIp" placeholder="请输入网关" />
-            </el-form-item>
-            <el-form-item label="PC地址段" prop="pcIpRange">
-              <el-input v-model="form.pcIpRange" placeholder="请输入PC地址段" />
-            </el-form-item>
-            <el-form-item label="ATM地址段" prop="atmIpRange">
-              <el-input v-model="form.atmIpRange" placeholder="请输入ATM地址段" />
-            </el-form-item>
-            <el-form-item label="监控地址段" prop="monitorIpRange">
-              <el-input v-model="form.monitorIpRange" placeholder="请输入监控地址段" />
-            </el-form-item>
-            <el-form-item label="WLAN地址段" prop="wlanIpRange">
-              <el-input v-model="form.wlanIpRange" placeholder="请输入WLAN地址段" />
-            </el-form-item>
-            <el-form-item label="主机名" prop="hostName">
-              <el-input v-model="form.hostName" placeholder="请输入主机名" />
-            </el-form-item>
-            <el-form-item label="同城联通/30" prop="unicomCircuitIp">
-              <el-input v-model="form.unicomCircuitIp" placeholder="请输入同城联通/30" />
-            </el-form-item>
-            <el-form-item label="设备型号" prop="deviceType">
-              <el-input v-model="form.deviceType" placeholder="设备型号" />
-            </el-form-item>
+          <el-col :span="8" v-for="(column, colIndex) in displayColumns" :key="colIndex">
+            <template v-for="field in column">
+              <el-form-item :label="field.label" :prop="field.prop" >
+                <el-input v-model="form[field.prop]" :placeholder="'请输入' + field.label" />
+              </el-form-item>
+            </template>
           </el-col>
         </el-row>
-        <!-- <el-form-item label="备注" prop="remark">
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-            </el-form-item>
-            <el-form-item label="创建人" prop="createdBy">
-              <el-input v-model="form.createdBy" placeholder="请输入创建人" />
-            </el-form-item>
-            <el-form-item label="最后更新人" prop="updatedBy">
-              <el-input v-model="form.updatedBy" placeholder="请输入最后更新人" />
-            </el-form-item>
-            <el-form-item label="创建时间" prop="createdAt">
-              <el-date-picker clearable
-                v-model="form.createdAt"
-                type="date"
-                value-format="yyyy-MM-dd"
-                placeholder="请选择创建时间">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="更新时间" prop="updatedAt">
-              <el-date-picker clearable
-                v-model="form.updatedAt"
-                type="date"
-                value-format="yyyy-MM-dd"
-                placeholder="请选择更新时间">
-              </el-date-picker>
-            </el-form-item> -->
-        <!-- 单独放置备注 -->
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
@@ -706,9 +473,9 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-          <div class="el-upload__tip" slot="tip">
+          <!-- <div class="el-upload__tip" slot="tip">
             <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的全辖终端IP_准入设备信息数据
-          </div>
+          </div> -->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
             @click="importTemplate">下载模板</el-link>
@@ -796,6 +563,10 @@ export default {
         createdAt: null,
         updatedAt: null
       },
+      //实现展开与收起
+      showMoreFilters: false,
+      //折叠菜单
+      activeCollapse: ['more'],
       // ATM地址导入参数
       upload: {
         // 是否显示弹出层（用户导入）
@@ -815,50 +586,65 @@ export default {
       form: {},
       // 列信息
       columns: [
-        { key: 0, label: `序号`, visible: true },
-        { key: 1, label: `源IP`, visible: true },
-        { key: 2, label: `MAC地址`, visible: true },
-        { key: 3, label: `部门名称`, visible: true },
-        { key: 4, label: `用户姓名`, visible: true },
-        { key: 5, label: `网络设备`, visible: true },
-        { key: 6, label: `网络设备IP`, visible: true },
-        { key: 7, label: `端口`, visible: true },
-        { key: 8, label: `操作系统`, visible: true },
-        { key: 9, label: `电子邮箱`, visible: true },
-        { key: 10, label: `电话号码`, visible: true },
-        { key: 11, label: `管辖行`, visible: true },
-        { key: 12, label: `行名`, visible: true },
-        { key: 13, label: `设备`, visible: true },
-        { key: 14, label: `设备名称`, visible: true },
-        { key: 15, label: `设备型号`, visible: true },
-        { key: 16, label: `固定资产编号`, visible: true },
-        { key: 17, label: `设备年限`, visible: true },
-        { key: 18, label: `老旧设备更换`, visible: true },
-        { key: 19, label: `局域网地址范围`, visible: true },
-        { key: 20, label: `Ethernet IP`, visible: true },
-        { key: 21, label: `网关`, visible: true },
-        { key: 22, label: `PC地址段`, visible: true },
-        { key: 23, label: `ATM地址段`, visible: true },
-        { key: 24, label: `监控地址段`, visible: true },
-        { key: 25, label: `WLAN地址段`, visible: true },
-        { key: 26, label: `冠字号机具`, visible: true },
-        { key: 27, label: `新loopback/32`, visible: true },
-        { key: 28, label: `同城电信/30`, visible: true },
-        { key: 29, label: `同城移动/30`, visible: true },
-        { key: 30, label: `同城联通/30`, visible: true },
-        { key: 31, label: `同城有线电视/30`, visible: true },
-        { key: 32, label: `电信mstp vlan`, visible: true },
-        { key: 33, label: `移动mstp vlan`, visible: true },
-        { key: 34, label: `联通mstp vlan`, visible: true },
-        { key: 35, label: `有线电视mstp vlan`, visible: true },
-        { key: 36, label: `主机名`, visible: true },
-        { key: 37, label: `备注`, visible: true }
+        { key: 0, label: '序号', prop: 'index', visible: true },
+        { key: 1, label: '源IP', prop: 'sourceIp', visible: true },
+        { key: 2, label: 'MAC地址', prop: 'macAddress', visible: true },
+        { key: 3, label: '部门名称', prop: 'departmentName', visible: true },
+        { key: 4, label: '用户姓名', prop: 'userName', visible: true },
+        { key: 5, label: '网络设备', prop: 'networkDevice', visible: true },
+        { key: 6, label: '网络设备IP', prop: 'networkDeviceIp', visible: true },
+        { key: 7, label: '端口', prop: 'port', visible: true },
+        { key: 8, label: '操作系统', prop: 'operatingSystem', visible: true },
+        { key: 9, label: '电子邮箱', prop: 'email', visible: true },
+        { key: 10, label: '电话号码', prop: 'phoneNumber', visible: true },
+        { key: 11, label: '管辖行', prop: 'branchName', visible: true },
+        { key: 12, label: '行名', prop: 'subBranchName', visible: true },
+        { key: 13, label: '设备', prop: 'device', visible: true },
+        { key: 14, label: '设备名称', prop: 'deviceName', visible: true },
+        { key: 15, label: '设备型号', prop: 'deviceType', visible: true },
+        { key: 16, label: '固定资产编号', prop: 'assetNumber', visible: true },
+        { key: 17, label: '设备年限', prop: 'deviceAge', visible: true },
+        { key: 18, label: '老旧设备更换', prop: 'oldDeviceReplacement', visible: true },
+        { key: 19, label: '局域网地址范围', prop: 'localNetworkIpRange', visible: true },
+        { key: 20, label: 'Ethernet IP', prop: 'ethernetIp', visible: true },
+        { key: 21, label: '网关', prop: 'gatewayIp', visible: true },
+        { key: 22, label: 'PC地址段', prop: 'pcIpRange', visible: true },
+        { key: 23, label: 'ATM地址段', prop: 'atmIpRange', visible: true },
+        { key: 24, label: '监控地址段', prop: 'monitorIpRange', visible: true },
+        { key: 25, label: 'WLAN地址段', prop: 'wlanIpRange', visible: true },
+        { key: 26, label: '冠字号机具', prop: 'currencyMachineIpRange', visible: true },
+        { key: 27, label: '新loopback/32', prop: 'loopbackIp', visible: true },
+        { key: 28, label: '同城电信/30', prop: 'telecomCircuitIp', visible: true },
+        { key: 29, label: '同城移动/30', prop: 'mobileCircuitIp', visible: true },
+        { key: 30, label: '同城联通/30', prop: 'unicomCircuitIp', visible: true },
+        { key: 31, label: '同城有线电视/30', prop: 'cableTvCircuitIp', visible: true },
+        { key: 32, label: '电信mstp vlan', prop: 'telecomMstpVlan', visible: true },
+        { key: 33, label: '移动mstp vlan', prop: 'mobileMstpVlan', visible: true },
+        { key: 34, label: '联通mstp vlan', prop: 'unicomMstpVlan', visible: true },
+        { key: 35, label: '有线电视mstp vlan', prop: 'cableTvMstpVlan', visible: true },
+        { key: 36, label: '主机名', prop: 'hostName', visible: true },
+        { key: 37, label: '备注', prop: 'remark', visible: true }
       ],
-
       // 表单校验
       rules: {
       }
     };
+  },
+  computed: {
+    displayColumns() {
+      const visibleColumns = this.columns.filter(col => col.visible && col.key !== 0 && col.prop !== "remark");
+      const total = visibleColumns.length;
+      const numPerCol = Math.ceil(total / 3); // 每列元素的数量
+      
+      const columns = [[], [], []];
+      
+      // 按照每列的数量将元素分配到对应的列
+      for (let i = 0; i < total; i++) {
+        columns[Math.floor(i / numPerCol)].push(visibleColumns[i]);
+      }
+      
+      return columns;
+    }
   },
   created() {
     this.getList();
@@ -872,6 +658,10 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    loadIpAccessInfo(data) {
+      this.form = { ...data };
+      this.getIpaccessInfoOpen = true;
     },
     /** 全辖终端IP准入设备信息详情页*/
     GetIpaccessInfo(row) {
@@ -901,7 +691,7 @@ export default {
       this.download(
         "system/ipaccess/importTemplate",
         {},
-        `ipaccess_template_${new Date().getTime()}.xlsx`
+        `全辖终端IP准入设备信息_${new Date().getTime()}.xlsx`
       );
     },
     // 文件上传中处理
@@ -1061,13 +851,45 @@ export default {
       const formattedDate = `${year}${month}${day}_${hours}${minutes}_${seconds}`;
 
       // 生成文件名
-      const fileName = `ipaccess_${formattedDate}.xlsx`;
+      const fileName = `省行终端服务器_${formattedDate}.xlsx`;
 
       // 调用下载方法
       this.download('system/ipaccess/export', {
         ...this.queryParams
       }, fileName);
+    },
+    toggleMoreFilters() {
+      this.showMoreFilters = !this.showMoreFilters
+      if (this.showMoreFilters) {
+        this.activeCollapse = ['more']
+      } else {
+        this.activeCollapse = []
+      }
     }
   }
 };
 </script>
+
+<style scoped>
+.dialog-footer {
+  text-align: right;
+  padding: 10px 20px;
+  border-top: 1px solid #e4e7ed;
+}
+.dialog-content{
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.el-collapse {
+  border: none;
+}
+
+.el-collapse-item>>>.el-collapse-item__header {
+  display: none;
+}
+
+.el-collapse-item>>>.el-collapse-item__wrap {
+  border-bottom: none;
+}
+</style>

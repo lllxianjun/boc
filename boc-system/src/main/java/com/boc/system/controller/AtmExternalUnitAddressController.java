@@ -44,7 +44,7 @@ public class AtmExternalUnitAddressController extends BaseController
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<AtmExternalUnitAddress> util = new ExcelUtil<AtmExternalUnitAddress>(AtmExternalUnitAddress.class);
+        ExcelUtil<AtmExternalUnitAddress> util = new ExcelUtil<>(AtmExternalUnitAddress.class);
         List<AtmExternalUnitAddress> atmExternalUnitAddressControllerList = util.importExcel(file.getInputStream());
         String operName = getUsername();
         String message = atmExternalUnitAddressService.importAtmExternalUnitAddress(atmExternalUnitAddressControllerList, updateSupport, operName);
@@ -57,7 +57,7 @@ public class AtmExternalUnitAddressController extends BaseController
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
-        ExcelUtil<AtmExternalUnitAddress> util = new ExcelUtil<AtmExternalUnitAddress>(AtmExternalUnitAddress.class);
+        ExcelUtil<AtmExternalUnitAddress> util = new ExcelUtil<>(AtmExternalUnitAddress.class);
         util.importTemplateExcel(response, "ATM地址表");
     }
     
@@ -82,7 +82,7 @@ public class AtmExternalUnitAddressController extends BaseController
     public void export(HttpServletResponse response, AtmExternalUnitAddress atmExternalUnitAddress)
     {
         List<AtmExternalUnitAddress> list = atmExternalUnitAddressService.selectAtmExternalUnitAddressList(atmExternalUnitAddress);
-        ExcelUtil<AtmExternalUnitAddress> util = new ExcelUtil<AtmExternalUnitAddress>(AtmExternalUnitAddress.class);
+        ExcelUtil<AtmExternalUnitAddress> util = new ExcelUtil<>(AtmExternalUnitAddress.class);
         util.exportExcel(response, list, "离行ATM及外联单位地址数据");
     }
 

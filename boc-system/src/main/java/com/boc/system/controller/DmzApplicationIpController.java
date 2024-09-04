@@ -44,7 +44,7 @@ public class DmzApplicationIpController extends BaseController
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
     {
-        ExcelUtil<DmzApplicationIp> util = new ExcelUtil<DmzApplicationIp>(DmzApplicationIp.class);
+        ExcelUtil<DmzApplicationIp> util = new ExcelUtil<>(DmzApplicationIp.class);
         List<DmzApplicationIp> dmzApplicationIpList = util.importExcel(file.getInputStream());
         String operName = getUsername();
         String message = dmzApplicationIpService.importDmzApplicationIp(dmzApplicationIpList, updateSupport, operName);
@@ -57,7 +57,7 @@ public class DmzApplicationIpController extends BaseController
     @PostMapping("/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
-        ExcelUtil<DmzApplicationIp> util = new ExcelUtil<DmzApplicationIp>(DmzApplicationIp.class);
+        ExcelUtil<DmzApplicationIp> util = new ExcelUtil<>(DmzApplicationIp.class);
         util.importTemplateExcel(response, "DMZ区应用系统IP");
     }
 
@@ -83,7 +83,7 @@ public class DmzApplicationIpController extends BaseController
     public void export(HttpServletResponse response, DmzApplicationIp dmzApplicationIp)
     {
         List<DmzApplicationIp> list = dmzApplicationIpService.selectDmzApplicationIpList(dmzApplicationIp);
-        ExcelUtil<DmzApplicationIp> util = new ExcelUtil<DmzApplicationIp>(DmzApplicationIp.class);
+        ExcelUtil<DmzApplicationIp> util = new ExcelUtil<>(DmzApplicationIp.class);
         util.exportExcel(response, list, "DMZ区应用系统IP数据");
     }
 
