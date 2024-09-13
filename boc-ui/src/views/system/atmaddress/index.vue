@@ -24,7 +24,7 @@
           <!-- 这里放折叠内容 -->
         </el-collapse-item>
       </el-collapse>
-      <!-- <el-form-item label="ATM位置" prop="atmLocation">
+      <el-form-item label="ATM位置" label-width="70px" prop="atmLocation">
         <el-input
           v-model="queryParams.atmLocation"
           placeholder="请输入ATM位置"
@@ -32,6 +32,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <!-- 
       <el-form-item label="设备型号" prop="deviceModel">
         <el-input
           v-model="queryParams.deviceModel"
@@ -309,7 +310,7 @@
       <el-table-column label="操作" fixed="right" align="center" class-name="small-padding fixed-width">
 
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-message" @click="GetAtmExternalUnitAddressInfo(scope.row)"
+          <el-button size="mini" type="text" icon="el-icon-view" @click="GetAtmExternalUnitAddressInfo(scope.row)"
             v-hasPermi="['system:atmaddress:query']">查看详情</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['system:atmaddress:edit']">修改</el-button>

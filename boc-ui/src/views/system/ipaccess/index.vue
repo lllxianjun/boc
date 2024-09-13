@@ -21,13 +21,23 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      
 
       <!-- 折叠搜索区域 -->
       <el-collapse v-model="activeCollapse" v-show="showMoreFilters">
         <el-collapse-item name="more">
           <!-- 这里放折叠内容 -->
+          <el-form-item label="新loopback/32" label-width="110px" prop="loopbackIp">
+            <el-input
+              v-model="queryParams.loopbackIp"
+              placeholder="请输入新loopback/32"
+              clearable
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
         </el-collapse-item>
       </el-collapse>
+      
       <!-- 
       <el-form-item label="用户姓名" prop="userName">
         <el-input
@@ -201,14 +211,6 @@
         <el-input
           v-model="queryParams.currencyMachineIpRange"
           placeholder="请输入冠字号机具"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="新loopback/32" prop="loopbackIp">
-        <el-input
-          v-model="queryParams.loopbackIp"
-          placeholder="请输入新loopback/32"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -409,7 +411,7 @@
 </el-table-column> -->
       <el-table-column label="操作" fixed="right" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-message" @click="GetIpaccessInfo(scope.row)"
+          <el-button size="mini" type="text" icon="el-icon-view" @click="GetIpaccessInfo(scope.row)"
             v-hasPermi="['system:ipaccess:query']">查看详情</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['system:ipaccess:edit']">修改</el-button>
@@ -423,7 +425,7 @@
       @pagination="getList" />
 
     <!-- 查看全辖终端IP_准入设备信息详情 -->
-    <el-dialog title="DMZ区应用系统IP详情" :visible.sync="getIpaccessInfoOpen" width="1000px" append-to-body>
+    <el-dialog title="全辖终端IP_准入设备信息详情" :visible.sync="getIpaccessInfoOpen" width="1200px" append-to-body>
       <el-form :model="form" label-width="120px" class="dialog-content">
         <el-row :gutter="20">
           <el-col :span="8" v-for="(column, colIndex) in displayColumns" :key="colIndex">
@@ -440,20 +442,155 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    
 
     <!-- 添加或修改全辖终端IP_准入设备信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="dialog-content">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row :gutter="20">
-          <el-col :span="8" v-for="(column, colIndex) in displayColumns" :key="colIndex">
-            <template v-for="field in column">
-              <el-form-item :label="field.label" :prop="field.prop" >
-                <el-input v-model="form[field.prop]" :placeholder="'请输入' + field.label" />
-              </el-form-item>
-            </template>
+          <!-- 第一列 -->
+          <el-col :span="8">
+            <el-form-item label="源IP" prop="sourceIp">
+              <el-input v-model="form.sourceIp" placeholder="请输入源IP" />
+            </el-form-item>
+            <el-form-item label="MAC地址" prop="macAddress">
+              <el-input v-model="form.macAddress" placeholder="请输入MAC地址" />
+            </el-form-item>
+            <el-form-item label="部门名称" prop="departmentName">
+              <el-input v-model="form.departmentName" placeholder="请输入部门名称" />
+            </el-form-item>
+            <el-form-item label="用户姓名" prop="userName">
+              <el-input v-model="form.userName" placeholder="请输入用户姓名" />
+            </el-form-item>
+            <el-form-item label="网络设备" prop="networkDevice">
+              <el-input v-model="form.networkDevice" placeholder="请输入网络设备" />
+            </el-form-item>
+            <el-form-item label="网络设备IP" prop="networkDeviceIp">
+              <el-input v-model="form.networkDeviceIp" placeholder="请输入网络设备IP" />
+            </el-form-item>
+            <el-form-item label="端口" prop="port">
+              <el-input v-model="form.port" placeholder="请输入端口" />
+            </el-form-item>
+            <el-form-item label="操作系统" prop="operatingSystem">
+              <el-input v-model="form.operatingSystem" placeholder="请输入操作系统" />
+            </el-form-item>
+            <el-form-item label="冠字号机具" prop="currencyMachineIpRange">
+              <el-input v-model="form.currencyMachineIpRange" placeholder="请输入冠字号机具" />
+            </el-form-item>
+            <el-form-item label="新loopback/32" prop="loopbackIp">
+              <el-input v-model="form.loopbackIp" placeholder="请输入新loopback/32" />
+            </el-form-item>
+            <el-form-item label="同城电信/30" prop="telecomCircuitIp">
+              <el-input v-model="form.telecomCircuitIp" placeholder="请输入同城电信/30" />
+            </el-form-item>
+            <el-form-item label="移动mstp vlan" prop="mobileMstpVlan">
+              <el-input v-model="form.mobileMstpVlan" placeholder="请输入移动mstp vlan" />
+            </el-form-item>
+            <el-form-item label="有线电视mstp vlan" prop="cableTvMstpVlan">
+              <el-input v-model="form.cableTvMstpVlan" placeholder="请输入有线电视mstp vlan" />
+            </el-form-item>
+          </el-col>
+          <!-- 第二列 -->
+          <el-col :span="8">
+            <el-form-item label="电子邮箱" prop="email">
+              <el-input v-model="form.email" placeholder="请输入电子邮箱" />
+            </el-form-item>
+            <el-form-item label="电话号码" prop="phoneNumber">
+              <el-input v-model="form.phoneNumber" placeholder="请输入电话号码" />
+            </el-form-item>
+            <el-form-item label="管辖行" prop="branchName">
+              <el-input v-model="form.branchName" placeholder="请输入管辖行" />
+            </el-form-item>
+            <el-form-item label="行名" prop="subBranchName">
+              <el-input v-model="form.subBranchName" placeholder="请输入行名" />
+            </el-form-item>
+            <el-form-item label="设备" prop="device">
+              <el-input v-model="form.device" placeholder="请输入设备" />
+            </el-form-item>
+            <el-form-item label="设备名称" prop="deviceName">
+              <el-input v-model="form.deviceName" placeholder="请输入设备名称" />
+            </el-form-item>
+            <el-form-item label="固定资产编号" prop="assetNumber">
+              <el-input v-model="form.assetNumber" placeholder="请输入固定资产编号" />
+            </el-form-item>
+            <el-form-item label="设备年限" prop="deviceAge">
+              <el-input v-model="form.deviceAge" placeholder="请输入设备年限" />
+            </el-form-item>
+            <el-form-item label="同城有线电视/30" prop="cableTvCircuitIp">
+              <el-input v-model="form.cableTvCircuitIp" placeholder="请输入同城有线电视/30" />
+            </el-form-item>
+            <el-form-item label="电信mstp vlan" prop="telecomMstpVlan">
+              <el-input v-model="form.telecomMstpVlan" placeholder="请输入电信mstp vlan" />
+            </el-form-item>
+            <el-form-item label="同城移动/30" prop="mobileCircuitIp">
+              <el-input v-model="form.mobileCircuitIp" placeholder="请输入同城移动/30" />
+            </el-form-item>
+            <el-form-item label="联通mstp vlan" prop="unicomMstpVlan">
+              <el-input v-model="form.unicomMstpVlan" placeholder="请输入联通mstp vlan" />
+            </el-form-item>
+          </el-col>
+          <!-- 第三列 -->
+          <el-col :span="8">
+            <el-form-item label="老旧设备更换" prop="oldDeviceReplacement">
+              <el-input v-model="form.oldDeviceReplacement" placeholder="请输入老旧设备更换" />
+            </el-form-item>
+            <el-form-item label="局域网地址范围" prop="localNetworkIpRange">
+              <el-input v-model="form.localNetworkIpRange" placeholder="请输入局域网地址范围" />
+            </el-form-item>
+            <el-form-item label="Ethernet IP" prop="ethernetIp">
+              <el-input v-model="form.ethernetIp" placeholder="请输入Ethernet IP" />
+            </el-form-item>
+            <el-form-item label="网关" prop="gatewayIp">
+              <el-input v-model="form.gatewayIp" placeholder="请输入网关" />
+            </el-form-item>
+            <el-form-item label="PC地址段" prop="pcIpRange">
+              <el-input v-model="form.pcIpRange" placeholder="请输入PC地址段" />
+            </el-form-item>
+            <el-form-item label="ATM地址段" prop="atmIpRange">
+              <el-input v-model="form.atmIpRange" placeholder="请输入ATM地址段" />
+            </el-form-item>
+            <el-form-item label="监控地址段" prop="monitorIpRange">
+              <el-input v-model="form.monitorIpRange" placeholder="请输入监控地址段" />
+            </el-form-item>
+            <el-form-item label="WLAN地址段" prop="wlanIpRange">
+              <el-input v-model="form.wlanIpRange" placeholder="请输入WLAN地址段" />
+            </el-form-item>
+            <el-form-item label="主机名" prop="hostName">
+              <el-input v-model="form.hostName" placeholder="请输入主机名" />
+            </el-form-item>
+            <el-form-item label="同城联通/30" prop="unicomCircuitIp">
+              <el-input v-model="form.unicomCircuitIp" placeholder="请输入同城联通/30" />
+            </el-form-item>
+            <el-form-item label="设备型号" prop="deviceType">
+              <el-input v-model="form.deviceType" placeholder="设备型号" />
+            </el-form-item>
           </el-col>
         </el-row>
+        <!-- <el-form-item label="备注" prop="remark">
+              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+            </el-form-item>
+            <el-form-item label="创建人" prop="createdBy">
+              <el-input v-model="form.createdBy" placeholder="请输入创建人" />
+            </el-form-item>
+            <el-form-item label="最后更新人" prop="updatedBy">
+              <el-input v-model="form.updatedBy" placeholder="请输入最后更新人" />
+            </el-form-item>
+            <el-form-item label="创建时间" prop="createdAt">
+              <el-date-picker clearable
+                v-model="form.createdAt"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="请选择创建时间">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="更新时间" prop="updatedAt">
+              <el-date-picker clearable
+                v-model="form.updatedAt"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="请选择更新时间">
+              </el-date-picker>
+            </el-form-item> -->
+        <!-- 单独放置备注 -->
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
@@ -632,18 +769,13 @@ export default {
   },
   computed: {
     displayColumns() {
-      const visibleColumns = this.columns.filter(col => col.visible && col.key !== 0 && col.prop !== "remark");
-      const total = visibleColumns.length;
-      const numPerCol = Math.ceil(total / 3); // 每列元素的数量
-      
-      const columns = [[], [], []];
-      
-      // 按照每列的数量将元素分配到对应的列
-      for (let i = 0; i < total; i++) {
-        columns[Math.floor(i / numPerCol)].push(visibleColumns[i]);
-      }
-      
-      return columns;
+      const visibleColumns = this.columns.filter(col => col.visible && col.key !== 0 && col.key !== 37);
+      const columnCount = Math.ceil(visibleColumns.length / 3);
+      return [
+        visibleColumns.slice(0, columnCount),
+        visibleColumns.slice(columnCount, columnCount * 2),
+        visibleColumns.slice(columnCount * 2)
+      ];
     }
   },
   created() {

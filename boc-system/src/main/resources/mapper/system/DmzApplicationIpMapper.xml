@@ -92,8 +92,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="openPort != null  and openPort != ''"> and open_port like concat('%', #{openPort}, '%')</if>
             <if test="initiator != null  and initiator != ''"> and initiator like concat('%', #{initiator}, '%')</if>
             <if test="ip != null  and ip != ''"> and ip like concat('%', #{ip}, '%')</if>
-            <if test="ipArea != null  and ipArea != ''"> and ipArea like concat('%', #{ip}, '%')</if>
-            <if test="deviceType != null  and deviceType != ''"> and deviceType like concat('%', #{ip}, '%')</if>
+            <if test="ipArea != null  and ipArea != ''"> and ipArea like concat('%', #{ipArea}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''"> and deviceType like concat('%', #{deviceType}, '%')</if>
             <if test="purpose != null  and purpose != ''"> and purpose like concat('%', #{purpose}, '%')</if>
             <if test="externalAddressSegment != null  and externalAddressSegment != ''"> and external_address_segment like concat('%', #{externalAddressSegment}, '%')</if>
             <if test="internalAddressSegment != null  and internalAddressSegment != ''"> and internal_address_segment like concat('%', #{internalAddressSegment}, '%')</if>

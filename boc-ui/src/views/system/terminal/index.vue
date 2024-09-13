@@ -404,7 +404,7 @@
       </el-table-column> -->
       <el-table-column label="操作" fixed="right" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-message" @click="GetTerminalInfo(scope.row)"
+          <el-button size="mini" type="text" icon="el-icon-view" @click="GetTerminalInfo(scope.row)"
             v-hasPermi="['system:terminal:query']">查看详情</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['system:terminal:edit']">修改</el-button>

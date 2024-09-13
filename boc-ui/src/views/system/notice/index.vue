@@ -32,7 +32,7 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
+ 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -68,7 +68,7 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
+ 
     <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="noticeId" width="100" />
@@ -110,10 +110,16 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:notice:remove']"
           >删除</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+            @click="openDetailDialog(scope.row.noticeId)"
+          >查看</el-button>
         </template>
       </el-table-column>
     </el-table>
-
+ 
     <pagination
       v-show="total>0"
       :total="total"
@@ -121,7 +127,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
+ 
     <!-- 添加或修改公告对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="780px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -166,12 +172,28 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+ 
+ 
+    <!--通知公告详情 -->
+    <el-dialog :title="form.noticeTitle" :visible.sync="openDetail" width="800px" append-to-body>
+      <div style="margin-top:-20px;margin-bottom:10px;">
+        <el-tag size="mini" effect="dark" type="warning" v-if="form.noticeType==2">公告</el-tag>
+        <el-tag size="mini" effect="dark" v-else>信息</el-tag>
+        <span style="margin-left:20px;">{{form.createTime}}</span>
+      </div>
+      <div v-loading="loadingDetail" class="content">
+        <div v-html="form.noticeContent" style="margin-left:0px;margin-right:76px" class="ql-editor"></div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="closeDetail"> 关 闭 </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
-
+ 
 <script>
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
-
+ 
 export default {
   name: "Notice",
   dicts: ['sys_notice_status', 'sys_notice_type'],
@@ -179,6 +201,10 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      // 详情加载
+      loadingDetail: false,
+      // 打开详情
+      openDetail: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -276,6 +302,22 @@ export default {
         this.open = true;
         this.title = "修改公告";
       });
+    },
+    // 打开信息详情
+    openDetailDialog(id) {
+      this.openDetail = true;
+      this.loadingDetail = true;
+      getNotice(id).then(response => {
+        this.form = response.data;
+        this.openDetail = true;
+        this.loadingDetail = false;
+      });
+    },
+    // 取消按钮
+    closeDetail() {
+      this.titleDetail = "详情";
+      this.openDetail = false;
+      this.reset();
     },
     /** 提交按钮 */
     submitForm: function() {
